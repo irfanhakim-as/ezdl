@@ -1,0 +1,115 @@
+{
+    "yt_best": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "bestvideo[height<=3000]+bestaudio",
+            "outtmpl": "{path}/%(title)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "YouTube"
+    },
+    "yt_mp4": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "bestvideo[height<=3000]+bestaudio",
+            "outtmpl": "{path}/%(title)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                },
+                {
+                    "key": "FFmpegVideoConvertor",
+                    "preferedformat": "mp4"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "YouTube (MP4)"
+    },
+    "yt_mp3": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "bestaudio",
+            "outtmpl": "{path}/%(title)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                },
+                {
+                    "key": "FFmpegVideoConvertor",
+                    "preferedformat": "mp3"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "YouTube (MP3)"
+    },
+    "twitter": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "best",
+            "outtmpl": "{path}/%(id)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                }
+            ],
+            "restrictfilenames": true
+        },
+        "pretty_name": "Twitter"
+    },
+    "vimeo": {
+        "embedder": "https://www.patreon.com",
+        "opts": {
+            "cookie": null,
+            "format": "bestvideo[height<=3000]+bestaudio",
+            "outtmpl": "{path}/%(title)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "Vimeo"
+    },
+    "socials": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "best",
+            "outtmpl": "{path}/%(id)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "Socials"
+    },
+    "others": {
+        "embedder": null,
+        "opts": {
+            "cookie": null,
+            "format": "best",
+            "outtmpl": "{path}/%(title)s.%(ext)s",
+            "postprocessors": [
+                {
+                    "key": "FFmpegMetadata"
+                }
+            ],
+            "restrictfilenames": false
+        },
+        "pretty_name": "Others"
+    }
+}
