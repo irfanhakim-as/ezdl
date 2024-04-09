@@ -1,0 +1,8 @@
+{
+    "cookies_dir": "~/.ezdl/cookies",
+    "download_paths": {
+        "default": "~/Downloads",
+        "current": "."
+    },
+    "install_pfx": "~/.local"
+}
