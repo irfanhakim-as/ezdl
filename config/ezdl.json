@@ -4,5 +4,6 @@
         "default": "~/Downloads",
         "current": "."
     },
-    "install_pfx": "~/.local"
+    "install_pfx": "~/.local",
+    "skip_sanitise": false
 }
