@@ -73,6 +73,8 @@ def syncCookies(cookiesDir):
     if cookiesDict:
         # sort cookies alphabetically
         cookiesDict = dict(sorted(cookiesDict.items()))
+        # add option to not use cookies
+        cookiesDict["anonymous"] = None
     return cookiesDict
 
 
