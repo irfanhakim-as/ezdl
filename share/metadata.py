@@ -1,5 +1,5 @@
 __name__ = "ezdl"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "irfanhakim"
 __email__ = "irfanhakim.as@yahoo.com"
 __description__ = "Video downloader script for YouTube, Instagram, Tik Tok, and more."
