@@ -70,6 +70,9 @@ def syncCookies(cookiesDir):
                 cookie = str(Path(cookiesPath, f))
                 cookieName = normaliseString(f.lower().replace(".txt", ""))
                 cookiesDict[cookieName] = cookie
+    if cookiesDict:
+        # sort cookies alphabetically
+        cookiesDict = dict(sorted(cookiesDict.items()))
     return cookiesDict
 
 
