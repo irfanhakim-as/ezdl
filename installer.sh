@@ -2,7 +2,7 @@
 
 
 # source project metadata
-source "./share/md.sh"
+source "./share/metadata.py"
 
 
 # print help message
