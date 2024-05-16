@@ -12,6 +12,7 @@
 
 
 __name__="ezdl"
+__namespace__="ezdl"
 __version__="0.1.1"
 __author__="irfanhakim"
 __email__="irfanhakim.as@yahoo.com"
