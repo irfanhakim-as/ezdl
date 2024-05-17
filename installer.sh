@@ -21,7 +21,7 @@ function help() {
 
 # install script
 function install() {
-    echo "Installing ${__name__} to ${INSTALL_PFX}"
+    echo "Installing ${__name__} v${__version__} to ${INSTALL_PFX}"
     # create required directories
     for dir in "${required_directories[@]}"; do
         echo "Creating directory ${dir}"
