@@ -14,6 +14,7 @@ function help() {
     echo "  -i, --install-prefix <prefix>        Specify an installation prefix"
     echo "  -l, --link-install                   Perform a symlink installation"
     echo "  -u, --uninstall                      Uninstall application"
+    echo "Report bugs to ${__source__}/issues"
 }
 
 
