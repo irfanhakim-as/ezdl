@@ -146,7 +146,7 @@ def selectFromDict(data, **kwargs):
         data = {normaliseString(k): normaliseString(v) for k, v in data.items()}
     elif isinstance(data, str):
         # split string data by comma into a list and create dict where key is index and value is item
-        data = {"Option %s" % str(i): normaliseString(v) for i, v in enumerate(data.split(","), 1)}
+        data = {"Option %s" % str(i): v for i, (v) in enumerate((x for x in data.split(",") if x), 1)}
 
     # exit if data is empty or has not be parsed into a dict
     if not data or not isinstance(data, dict):
