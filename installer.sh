@@ -13,6 +13,7 @@ function help() {
     echo "  -i, --install-prefix <path>       Specify an installation prefix"
     echo "  -l, --link-install                Perform a symlink installation"
     echo "  -u, --uninstall                   Uninstall application"
+    echo "  -v, --version                     Return the version of the script"
     echo "  -h, --help                        Print help message"; echo
     echo "Report bugs to ${__source__}/issues"
 }
@@ -76,6 +77,10 @@ while [[ ${#} -gt 0 ]]; do
             ;;
         -u|--uninstall)
             UNINSTALL_APP=1
+            ;;
+        -v|--version)
+            echo "${__version__}"
+            exit 0
             ;;
         -h|--help)
             help
