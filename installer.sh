@@ -9,11 +9,11 @@ source "./share/metadata.py"
 function help() {
     echo "Usage: ${0} [options]"; echo
     echo "OPTIONS:"
-    echo "  -h, --help                           Print help message"
     # echo "  -c, --config-prefix <path>           Specify a config prefix"
     echo "  -i, --install-prefix <path>          Specify an installation prefix"
     echo "  -l, --link-install                   Perform a symlink installation"
     echo "  -u, --uninstall                      Uninstall application"
+    echo "  -h, --help                           Print help message"; echo
     echo "Report bugs to ${__source__}/issues"
 }
 
@@ -55,10 +55,6 @@ function uninstall() {
 # get optional arguments
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
-        -h|--help)
-            help
-            exit 0
-            ;;
         # -c|--config-prefix)
         #     if [ -z "${2}" ]; then
         #         echo "ERROR: Please specify a config prefix"
@@ -80,6 +76,10 @@ while [[ ${#} -gt 0 ]]; do
             ;;
         -u|--uninstall)
             UNINSTALL_APP=1
+            ;;
+        -h|--help)
+            help
+            exit 0
             ;;
         *)
             echo "ERROR: Invalid argument (${1})"
