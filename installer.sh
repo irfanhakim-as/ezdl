@@ -10,8 +10,8 @@ function help() {
     echo "Usage: ${0} [options]"; echo
     echo "OPTIONS:"
     echo "  -h, --help                           Print help message"
-    # echo "  -c, --config-prefix <prefix>         Specify a config prefix"
-    echo "  -i, --install-prefix <prefix>        Specify an installation prefix"
+    # echo "  -c, --config-prefix <path>           Specify a config prefix"
+    echo "  -i, --install-prefix <path>          Specify an installation prefix"
     echo "  -l, --link-install                   Perform a symlink installation"
     echo "  -u, --uninstall                      Uninstall application"
     echo "Report bugs to ${__source__}/issues"
