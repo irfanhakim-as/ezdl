@@ -9,11 +9,11 @@ source "./share/metadata.py"
 function help() {
     echo "Usage: ${0} [options]"; echo
     echo "OPTIONS:"
-    # echo "  -c, --config-prefix <path>           Specify a config prefix"
-    echo "  -i, --install-prefix <path>          Specify an installation prefix"
-    echo "  -l, --link-install                   Perform a symlink installation"
-    echo "  -u, --uninstall                      Uninstall application"
-    echo "  -h, --help                           Print help message"; echo
+    # echo "  -c, --config-prefix <path>        Specify a config prefix"
+    echo "  -i, --install-prefix <path>       Specify an installation prefix"
+    echo "  -l, --link-install                Perform a symlink installation"
+    echo "  -u, --uninstall                   Uninstall application"
+    echo "  -h, --help                        Print help message"; echo
     echo "Report bugs to ${__source__}/issues"
 }
 
