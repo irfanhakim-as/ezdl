@@ -73,8 +73,9 @@ def syncCookies(cookiesDir):
     if cookiesDict:
         # sort cookies alphabetically
         cookiesDict = dict(sorted(cookiesDict.items()))
-        # add option to not use cookies
-        cookiesDict["anonymous"] = None
+        # add option to not use cookies if the "reserved" key does not exist
+        if "anonymous" not in cookiesDict:
+            cookiesDict["anonymous"] = None
     return cookiesDict
 
 
