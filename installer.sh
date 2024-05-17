@@ -17,6 +17,40 @@ function help() {
 }
 
 
+# install script
+function install() {
+    echo "Installing ${__name__} to ${INSTALL_PFX}"
+    # create required directories
+    for dir in "${required_directories[@]}"; do
+        echo "Creating directory ${dir}"
+        mkdir -p "${dir}"
+    done
+    # copy required files
+    for file in "${!required_files[@]}"; do
+        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
+            echo "Copying ${file} to ${required_files[${file}]}"
+            cp -i "${file}" "${required_files[${file}]}"
+        else
+            echo "Symlinking ${file} to ${required_files[${file}]}"
+            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
+        fi
+    done
+}
+
+
+# uninstall script
+function uninstall() {
+    echo "Uninstalling ${__name__} from ${INSTALL_PFX}"
+    # remove target locations
+    for file in "${!required_files[@]}"; do
+        echo "Removing ${required_files[${file}]}"
+        rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
+    done
+}
+
+
+# ================= DO NOT EDIT BEYOND THIS LINE =================
+
 # get optional arguments
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
@@ -87,38 +121,6 @@ for dir in "${required_files[@]}"; do
         required_directories+=("${dir%/*}")
     fi
 done
-
-
-# install script
-function install() {
-    echo "Installing ${__name__} to ${INSTALL_PFX}"
-    # create required directories
-    for dir in "${required_directories[@]}"; do
-        echo "Creating directory ${dir}"
-        mkdir -p "${dir}"
-    done
-    # copy required files
-    for file in "${!required_files[@]}"; do
-        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
-            echo "Copying ${file} to ${required_files[${file}]}"
-            cp -i "${file}" "${required_files[${file}]}"
-        else
-            echo "Symlinking ${file} to ${required_files[${file}]}"
-            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
-        fi
-    done
-}
-
-
-# uninstall script
-function uninstall() {
-    echo "Uninstalling ${__name__} from ${INSTALL_PFX}"
-    # remove target locations
-    for file in "${!required_files[@]}"; do
-        echo "Removing ${required_files[${file}]}"
-        rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
-    done
-}
 
 
 # install or uninstall
