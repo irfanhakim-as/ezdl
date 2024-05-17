@@ -141,16 +141,16 @@ def selectFromDict(data, **kwargs):
     descKey = kwargs.get("desc")
     defaultPick = kwargs.get("default")
 
-    # exit if data is empty
-    if not data:
-        return None
-
-    # clean data into dict
+    # parse data into dict
     if isinstance(data, dict):
         data = {normaliseString(k): normaliseString(v) for k, v in data.items()}
-    else:
+    elif isinstance(data, str):
         # split string data by comma into a list and create dict where key is index and value is item
         data = {"Option %s" % str(i): normaliseString(v) for i, v in enumerate(data.split(","), 1)}
+
+    # exit if data is empty or has not be parsed into a dict
+    if not data or not isinstance(data, dict):
+        return None
 
     # determine default pick
     if data and not defaultPick:
