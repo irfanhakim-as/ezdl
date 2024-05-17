@@ -6,7 +6,7 @@ source "./share/metadata.py"
 
 
 # print help message
-function print_help() {
+function help() {
     echo "Usage: ${0} [options]"; echo
     echo "OPTIONS:"
     echo "  -h, --help                           Print help message"
@@ -21,7 +21,7 @@ function print_help() {
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
         -h|--help)
-            print_help
+            help
             exit 0
             ;;
         # -c|--config-prefix)
