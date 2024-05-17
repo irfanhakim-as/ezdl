@@ -36,7 +36,7 @@ from utils import (
 def getUserInput(config, **kwargs):
     colMargin = kwargs.get("margin")
     # list user cookies
-    cookiesDict = syncCookies(getConfigValue(config, "cookies_dir"))
+    cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
     sourceFile = os.path.expanduser("~/.config/ezdl/source.json")
     sourceDict = readJson(sourceFile)
