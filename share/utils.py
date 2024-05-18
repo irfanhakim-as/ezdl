@@ -153,7 +153,7 @@ def selectFromDict(data, **kwargs):
         return None
 
     # determine default pick
-    if not defaultPick:
+    if not defaultPick or defaultPick not in list(data.keys()):
         defaultPick = list(data.keys())[0] if data else None
 
     # print intro
