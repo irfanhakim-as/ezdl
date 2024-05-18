@@ -180,6 +180,7 @@ def downloadVideos(config, queue, **kwargs):
 
 if __name__ == "__main__":
     try:
+        # predefined values
         margin = 5
         # read user config
         configFile = os.path.expanduser("~/.config/ezdl/ezdl.json")
