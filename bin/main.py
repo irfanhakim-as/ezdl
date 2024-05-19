@@ -11,11 +11,15 @@
 # ezdl: Video downloader script for YouTube, Instagram, Tik Tok, and more.
 
 
+import argparse
 import os
 import sys
 import yt_dlp as youtube_dl
 project_path = "../share/ezdl"
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
+from metadata import (
+    __name__ as __app_name__,
+)
 from parser import (
     sanitiseVideoList,
 )
@@ -29,7 +33,24 @@ from utils import (
     selectFromDict,
     syncCookies,
     writeError,
+    writeWarning,
 )
+
+
+# get user arguments
+def get_args(arguments):
+    parser = argparse.ArgumentParser()
+    for arg in arguments:
+        if "names" in arg and "kwargs" in arg:
+            parser.add_argument(*arg["names"], **arg["kwargs"])
+    args, unknown = parser.parse_known_args()
+    # indicate unknown arguments have been provided
+    if unknown:
+        warningMessage = "%(app_name)s: invalid option(s) -- %(unknown)s\nTry '%(app_name)s --help' for more information." % {"app_name": __app_name__, "unknown": " ".join(unknown)}
+        print(writeWarning(warningMessage))
+        # parser.print_help()
+        exit(1)
+    return parser, args
 
 
 # get user input
