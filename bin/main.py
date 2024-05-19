@@ -19,6 +19,7 @@ project_path = "../share/ezdl"
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
 from metadata import (
     __name__ as __app_name__,
+    __version__ as __app_version__,
 )
 from parser import (
     sanitiseVideoList,
@@ -203,6 +204,21 @@ if __name__ == "__main__":
     try:
         # predefined values
         margin = 5
+        # get user arguments
+        arguments = [
+            {
+                "names": ["-v", "--version"],
+                "kwargs": {
+                    "help": "Return the version of the script",
+                    "action": "store_true",
+                }
+            },
+        ]
+        parser, args = get_args(arguments)
+        # return script version
+        if args.version:
+            print("%s: %s" % (__app_name__, __app_version__))
+            exit(0)
         # read user config
         configFile = os.path.expanduser("~/.config/ezdl/ezdl.json")
         config = readJson(configFile)
