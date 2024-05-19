@@ -227,8 +227,8 @@ if __name__ == "__main__":
         # download videos
         downloadVideos(config, queue, margin=margin, skipSanitise=False)
     except KeyboardInterrupt:
-        print("\n\n", "👋 Goodbye!")
+        print("\n\n%s" % "👋 Goodbye!")
         exit(0)
     except Exception as e:
-        print("\n\n", writeError("ERROR: %s" % e))
+        print("\n\n%s" % writeError("ERROR: %s" % e))
         exit(1)
