@@ -126,6 +126,11 @@ def writeError(message):
     return colouriseString("🚨 %s" % message, colour="red")
 
 
+# write warning message
+def writeWarning(message):
+    return colouriseString("⚠️ %s" % message, colour="yellow")
+
+
 # select from dict
 def selectFromDict(data, **kwargs):
     choice = None
