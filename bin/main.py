@@ -61,7 +61,7 @@ def getUserInput(config, **kwargs):
     cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
     sourceFile = os.path.expanduser("~/.config/ezdl/source.json")
-    sourceDict = readJson(sourceFile)
+    sourceDict = readJson(sourceFile, required=True)
 
     # get source selection
     source = selectFromDict(
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             exit(0)
         # read user config
         configFile = os.path.expanduser("~/.config/ezdl/ezdl.json")
-        config = readJson(configFile)
+        config = readJson(configFile, required=True)
         # get user queue
         queue = getUserInput(config, margin=margin)
         # download videos
