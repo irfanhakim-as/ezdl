@@ -12,6 +12,11 @@ def normaliseString(s):
     return s.strip() if s and isinstance(s, str) else s
 
 
+# resolve provided path
+def resolvePath(path):
+    return os.path.abspath(os.path.expanduser(path)) if path else None
+
+
 # create intro title
 def createIntro(title, **kwargs):
     return colouriseString("*-*-*-*-*-*-* %s *-*-*-*-*-*-*" % title.upper(), **kwargs)
