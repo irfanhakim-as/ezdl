@@ -233,7 +233,7 @@ if __name__ == "__main__":
         configFile = resolvePath("~/.config/ezdl/ezdl.json")
         config = readJson(configFile, required=True)
         # get user queue
-        queue = getUserInput(config, margin=margin)
+        queue = getUserInput(config, args=args, margin=margin)
         # download videos
         downloadVideos(config, queue, margin=margin, skipSanitise=False)
     except KeyboardInterrupt:
