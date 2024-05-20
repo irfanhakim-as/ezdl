@@ -46,13 +46,18 @@ def getConfigValue(config, key, **kwargs):
 
 
 # read json file
-def readJson(jsonFile):
+def readJson(jsonFile, **kwargs):
+    required = kwargs.get("required", False)
+    silent = kwargs.get("silent", False)
     data = {}
     if Path(jsonFile).is_file():
         with open(jsonFile, "r") as f:
             data = json.load(f)
     else:
-        print(writeWarning("JSON file not found! (%s)" % jsonFile))
+        if not silent:
+            print(writeWarning("JSON file not found! (%s)" % jsonFile))
+        if required:
+            exit(1)
     return data
 
 
