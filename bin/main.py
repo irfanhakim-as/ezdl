@@ -31,6 +31,7 @@ from utils import (
     getUserList,
     printColumns,
     readJson,
+    resolvePath,
     selectFromDict,
     syncCookies,
     writeError,
@@ -60,7 +61,7 @@ def getUserInput(config, **kwargs):
     # list user cookies
     cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
-    sourceFile = os.path.expanduser("~/.config/ezdl/source.json")
+    sourceFile = resolvePath("~/.config/ezdl/source.json")
     sourceDict = readJson(sourceFile, required=True)
 
     # get source selection
@@ -190,7 +191,7 @@ def downloadVideos(config, queue, **kwargs):
         printColumns(colDict, colMaxLen, header=False)
         # write failed downloads to log
         installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
-        logFile = os.path.expanduser("%s/share/ezdl/log/ezdl.log" % installPrefix)
+        logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
         with open(logFile, "a") as f:
             f.write("\n" + errorMessage + " " + " ".join(failedDownloads.values()))
     # print success message
@@ -220,7 +221,7 @@ if __name__ == "__main__":
             print("%s: %s" % (__app_name__, __app_version__))
             exit(0)
         # read user config
-        configFile = os.path.expanduser("~/.config/ezdl/ezdl.json")
+        configFile = resolvePath("~/.config/ezdl/ezdl.json")
         config = readJson(configFile, required=True)
         # get user queue
         queue = getUserInput(config, margin=margin)
