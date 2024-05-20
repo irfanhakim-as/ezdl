@@ -192,7 +192,7 @@ def downloadVideos(config, queue, **kwargs):
 
     # print failed downloads
     if failedDownloads:
-        errorMessage = "ezdl had trouble downloading these videos:"
+        errorMessage = "%s had trouble downloading these videos:" % __app_name__
         print(writeError(errorMessage), "\n")
         # create columns
         colDict, colMaxLen = createColumns(headers, [failedDownloads.keys(), failedDownloads.values()], margin=colMargin)
