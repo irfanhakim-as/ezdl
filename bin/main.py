@@ -224,6 +224,13 @@ if __name__ == "__main__":
                     "nargs": "+",
                 }
             },
+            {
+                "names": ["-y", "--yes"],
+                "kwargs": {
+                    "help": "say yes to all defaults",
+                    "action": "store_true",
+                }
+            },
         ]
         parser, args = get_args(arguments)
         # return script version
