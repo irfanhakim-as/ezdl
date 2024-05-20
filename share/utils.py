@@ -155,6 +155,7 @@ def selectFromDict(data, **kwargs):
     choiceStyle = kwargs.get("choiceStyle", itemStyle)
     descKey = kwargs.get("desc")
     defaultPick = kwargs.get("default")
+    yesToDefault = kwargs.get("yes", False)
 
     # parse data into dict
     if isinstance(data, dict):
@@ -190,7 +191,8 @@ def selectFromDict(data, **kwargs):
 
     # get user choice
     if defaultPick:
-        choice = input("Please select your choice [%s]: " % defaultPick).strip()
+        if not yesToDefault:
+            choice = input("Please select your choice [%s]: " % defaultPick).strip()
         choice = choice if choice and validateChoice(choice, data, offset=indexOffset) else list(data.keys()).index(defaultPick) + indexOffset
     else:
         while not validateChoice(choice, data, offset=indexOffset):
@@ -205,6 +207,7 @@ def selectFromDict(data, **kwargs):
 
 # get user list
 def getUserList(**kwargs):
+    confirm = None
     userList = kwargs.get("list")
     userList = userList if userList and (isinstance(userList, list) or isinstance(userList, str)) else []
     colMargin = kwargs.get("margin")
@@ -214,6 +217,7 @@ def getUserList(**kwargs):
     itemColour = kwargs.get("itemColour")
     itemStyle = kwargs.get("itemStyle")
     itemName = kwargs.get("item", "Item")
+    yesToDefault = kwargs.get("yes", False)
 
     # print intro
     if intro:
@@ -254,8 +258,9 @@ def getUserList(**kwargs):
         printColumns(colDict, colMaxLen)
 
         # get user confirmation
-        confirm = input("Do you want to proceed with the above list? [Y/n]: ").strip().lower()
-        print()
-        if not confirm in ["n", "no"]:
+        if not yesToDefault:
+            confirm = input("Do you want to proceed with the above list? [Y/n]: ").strip().lower()
+            print()
+        if yesToDefault or not confirm in ["n", "no"]:
             return userList
     return None
