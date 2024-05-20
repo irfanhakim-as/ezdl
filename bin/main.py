@@ -68,6 +68,7 @@ def getUserInput(config, **kwargs):
     # get source selection
     source = selectFromDict(
         sourceDict,
+        default=getConfigValue(config, "default_source"),
         intro="source",
         introColour="red",
         introStyle="bright",
@@ -82,6 +83,7 @@ def getUserInput(config, **kwargs):
     # get download path selection
     downloadPath = selectFromDict(
         getConfigValue(config, "download_paths", default={"default": "~/Downloads"}),
+        default=getConfigValue(config, "default_download_path"),
         intro="path",
         introColour="blue",
         introStyle="bright",
@@ -95,6 +97,7 @@ def getUserInput(config, **kwargs):
     # get cookie selection
     cookie = selectFromDict(
         cookiesDict,
+        default=getConfigValue(config, "default_cookie"),
         intro="cookie",
         introColour="green",
         introStyle="bright",
