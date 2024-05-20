@@ -111,6 +111,7 @@ def getUserInput(config, **kwargs):
         itemStyle="bright",
         itemName="video",
         margin=colMargin,
+        list=getattr(args, "video", None),
     )
 
     return {
