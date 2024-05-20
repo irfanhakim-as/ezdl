@@ -57,6 +57,7 @@ def get_args(arguments):
 
 # get user input
 def getUserInput(config, **kwargs):
+    args = kwargs.get("args")
     colMargin = kwargs.get("margin")
     # list user cookies
     cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
