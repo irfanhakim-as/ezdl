@@ -77,6 +77,7 @@ def getUserInput(config, **kwargs):
         choiceStyle="bright",
         desc="pretty_name",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get download path selection
     downloadPath = selectFromDict(
@@ -89,6 +90,7 @@ def getUserInput(config, **kwargs):
         choiceColour="green",
         choiceStyle="bright",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get cookie selection
     cookie = selectFromDict(
@@ -101,6 +103,7 @@ def getUserInput(config, **kwargs):
         choiceColour="green",
         choiceStyle="bright",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get video selection
     videoLinks = getUserList(
@@ -111,6 +114,7 @@ def getUserInput(config, **kwargs):
         itemStyle="bright",
         itemName="video",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
         list=getattr(args, "video", None),
     )
 
