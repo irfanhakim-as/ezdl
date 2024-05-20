@@ -210,7 +210,7 @@ if __name__ == "__main__":
             {
                 "names": ["-v", "--version"],
                 "kwargs": {
-                    "help": "Return the version of the script",
+                    "help": "return the version of the script",
                     "action": "store_true",
                 }
             },
