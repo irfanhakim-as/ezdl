@@ -214,6 +214,14 @@ if __name__ == "__main__":
                     "action": "store_true",
                 }
             },
+            {
+                "names": ["-l", "--video"],
+                "kwargs": {
+                    "help": "provide a list of video links to download",
+                    "type": str,
+                    "nargs": "+",
+                }
+            },
         ]
         parser, args = get_args(arguments)
         # return script version
