@@ -205,7 +205,7 @@ def selectFromDict(data, **kwargs):
 
 # get user list
 def getUserList(**kwargs):
-    userList = []
+    userList = kwargs.get("list", [])
     colMargin = kwargs.get("margin")
     intro = kwargs.get("intro")
     introColour = kwargs.get("introColour")
@@ -219,19 +219,23 @@ def getUserList(**kwargs):
         print(createIntro(intro, colour=introColour, style=introStyle), "\n")
 
     # get user input
-    loop = True
-    index = 0
-    while loop:
-        index += 1
-        item = input("%s %s: " % (itemName.capitalize(), index)).strip()
-        if item:
-            # split item by whitespace
-            for i in item.split(" "):
-                index += 1
-                userList.append(i.strip())
-            index -= 1
-        else:
-            loop = False
+    if not userList:
+        loop = True
+        index = 0
+        while loop:
+            index += 1
+            item = input("%s %s: " % (itemName.capitalize(), index)).strip()
+            if item:
+                # split item by whitespace
+                for i in item.split(" "):
+                    index += 1
+                    userList.append(i.strip())
+                index -= 1
+            else:
+                loop = False
+    # parse to list if user list is provided as string
+    elif isinstance(userList, str):
+        userList = [i.strip() for i in userList.split(" ") if i.strip()]
 
     # print list
     if userList:
