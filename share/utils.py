@@ -70,7 +70,7 @@ def readJson(jsonFile, **kwargs):
 def syncCookies(cookiesDir):
     cookiesDict = {}
     # get cookies directory
-    cookiesPath = Path(os.path.expanduser(cookiesDir)) if cookiesDir else None
+    cookiesPath = Path(resolvePath(cookiesDir)) if cookiesDir else None
     if cookiesPath and cookiesPath.is_dir():
         # get available cookies
         cookies = os.listdir(cookiesPath)
