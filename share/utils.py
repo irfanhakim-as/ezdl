@@ -35,7 +35,7 @@ def readConfig(configFile):
             configContent = f.read()
             config = {normaliseString(x.split("=", 1)[0]): normaliseString(x.split("=", 1)[1]) for x in configContent.splitlines()}
     else:
-        print("⚠️ Config file not found! (%s)" % configFile)
+        print(writeWarning("Config file not found! (%s)" % configFile))
     return config
 
 
@@ -52,7 +52,7 @@ def readJson(jsonFile):
         with open(jsonFile, "r") as f:
             data = json.load(f)
     else:
-        print("⚠️ JSON file not found! (%s)" % jsonFile)
+        print(writeWarning("JSON file not found! (%s)" % jsonFile))
     return data
 
 
