@@ -72,6 +72,8 @@ There are two configuration files available that are provided by default after i
 
 - `source.json`: Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading i.e. one profile for downloading YouTube videos as `mp4` files while another profile for downloading YouTube videos as `mp3` files. Examples can be found in the provided [`source.json`](config/source.json) file.
 
+They are both installed to `~/.config/ezdl` by default.
+
 ### ezdl.json
 
 | **Option** | **Description** | **Sample Value** | **Default Value** |
