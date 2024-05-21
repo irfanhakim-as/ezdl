@@ -2,7 +2,7 @@
     "yt_best": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "bestvideo[height<=3000]+bestaudio",
             "outtmpl": "{path}/%(title)s.%(ext)s",
             "postprocessors": [
@@ -17,7 +17,7 @@
     "yt_mp4": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "bestvideo[height<=3000]+bestaudio",
             "outtmpl": "{path}/%(title)s.%(ext)s",
             "postprocessors": [
@@ -36,7 +36,7 @@
     "yt_mp3": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "bestaudio",
             "outtmpl": "{path}/%(title)s.%(ext)s",
             "postprocessors": [
@@ -55,7 +55,7 @@
     "twitter": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "best",
             "outtmpl": "{path}/%(id)s.%(ext)s",
             "postprocessors": [
@@ -70,7 +70,7 @@
     "vimeo": {
         "embedder": "https://www.patreon.com",
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "bestvideo[height<=3000]+bestaudio",
             "outtmpl": "{path}/%(title)s.%(ext)s",
             "postprocessors": [
@@ -85,7 +85,7 @@
     "socials": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "best",
             "outtmpl": "{path}/%(id)s.%(ext)s",
             "postprocessors": [
@@ -100,7 +100,7 @@
     "others": {
         "embedder": null,
         "opts": {
-            "cookie": null,
+            "cookiefile": null,
             "format": "best",
             "outtmpl": "{path}/%(title)s.%(ext)s",
             "postprocessors": [
