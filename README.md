@@ -68,7 +68,7 @@
 
 There are two configuration files available that are provided by default after installation:
 
-- `ezdl.json`: Configuration options pertaining to the **ezdl** tool. All options are detailed below.
+- `ezdl.json`: Configuration options pertaining to the **ezdl** tool. All supported options are detailed below.
 
 - `source.json`: Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading i.e. one profile for downloading YouTube videos as `mp4` files while another profile for downloading YouTube videos as `mp3` files. Examples can be found in the provided [`source.json`](config/source.json) file.
 
@@ -76,12 +76,12 @@ There are two configuration files available that are provided by default after i
 
 | **Option** | **Description** | **Sample Value** | **Default Value** |
 | --- | --- | --- | --- |
-| `cookies_dir` | The directory where your cookie(s) are stored, if any. | `~/.ezdl/cookies` | `~/.ezdl/cookies` |
+| `cookies_dir` | The directory where your cookie(s) are stored, if any. | `~/Downloads/cookies` | `~/.ezdl/cookies` |
 | `default_cookie` | The default cookie (`.txt`) file name to use/suggest. | `cookies` if the file name is `cookies.txt` | `anonymous` or the first available cookie if any |
 | `default_download_path` | The default download path name to use/suggest. | `current` | `downloads` or the first available download path |
 | `default_source` | The default source profile name to use/suggest. | `twitter` | `yt_best` or the first available source profile |
-| `download_paths` | A dictionary of download path options comprised of a name and its path. | `{"videos": "~/Videos", "movies": "~/Movies"}` | `{"downloads": "~/Downloads", "current": "."}` |
-| `install_pfx` | The prefix where **ezdl** was installed. | `/usr/local` | `~/.local` |
+| `download_paths` | A dictionary of download path options comprised of their name and path. | `{"videos": "~/Videos", "movies": "~/Movies"}` | `{"downloads": "~/Downloads", "current": "."}` |
+| `install_pfx` | The prefix where **ezdl** was installed. Update this if it's been changed. | `/usr/local` | `~/.local` |
 | `skip_sanitise` | Specifies whether or not **ezdl** should skip sanitising video links. | `true` | `false` |
 
 ## Usage
