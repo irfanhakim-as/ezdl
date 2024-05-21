@@ -97,7 +97,7 @@ def getUserInput(config, **kwargs):
     # get cookie selection
     cookie = selectFromDict(
         cookiesDict,
-        default=getConfigValue(config, "default_cookie"), default="anonymous",
+        default=getConfigValue(config, "default_cookie", default="anonymous"),
         intro="cookie",
         introColour="green",
         introStyle="bright",
