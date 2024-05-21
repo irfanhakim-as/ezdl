@@ -11,11 +11,16 @@
 # ezdl: Video downloader script for YouTube, Instagram, Tik Tok, and more.
 
 
+import argparse
 import os
 import sys
 import yt_dlp as youtube_dl
 project_path = "../share/ezdl"
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
+from metadata import (
+    __name__ as __app_name__,
+    __version__ as __app_version__,
+)
 from parser import (
     sanitiseVideoList,
 )
@@ -26,24 +31,44 @@ from utils import (
     getUserList,
     printColumns,
     readJson,
+    resolvePath,
     selectFromDict,
     syncCookies,
     writeError,
+    writeWarning,
 )
+
+
+# get user arguments
+def get_args(arguments):
+    parser = argparse.ArgumentParser()
+    for arg in arguments:
+        if "names" in arg and "kwargs" in arg:
+            parser.add_argument(*arg["names"], **arg["kwargs"])
+    args, unknown = parser.parse_known_args()
+    # indicate unknown arguments have been provided
+    if unknown:
+        warningMessage = "%(app_name)s: invalid option(s) -- %(unknown)s\nTry '%(app_name)s --help' for more information." % {"app_name": __app_name__, "unknown": " ".join(unknown)}
+        print(writeWarning(warningMessage))
+        # parser.print_help()
+        exit(1)
+    return parser, args
 
 
 # get user input
 def getUserInput(config, **kwargs):
+    args = kwargs.get("args")
     colMargin = kwargs.get("margin")
     # list user cookies
-    cookiesDict = syncCookies(getConfigValue(config, "cookies_dir"))
+    cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
-    sourceFile = os.path.expanduser("~/.config/ezdl/source.json")
-    sourceDict = readJson(sourceFile)
+    sourceFile = resolvePath("~/.config/ezdl/source.json")
+    sourceDict = readJson(sourceFile, required=True)
 
     # get source selection
     source = selectFromDict(
         sourceDict,
+        default=getConfigValue(config, "default_source", default="yt_best"),
         intro="source",
         introColour="red",
         introStyle="bright",
@@ -53,10 +78,12 @@ def getUserInput(config, **kwargs):
         choiceStyle="bright",
         desc="pretty_name",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get download path selection
     downloadPath = selectFromDict(
-        getConfigValue(config, "download_paths", default={"default": "~/Downloads"}),
+        getConfigValue(config, "download_paths", default={"downloads": "~/Downloads", "current": "."}),
+        default=getConfigValue(config, "default_download_path", default="downloads"),
         intro="path",
         introColour="blue",
         introStyle="bright",
@@ -65,10 +92,12 @@ def getUserInput(config, **kwargs):
         choiceColour="green",
         choiceStyle="bright",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get cookie selection
     cookie = selectFromDict(
         cookiesDict,
+        default=getConfigValue(config, "default_cookie", default="anonymous"),
         intro="cookie",
         introColour="green",
         introStyle="bright",
@@ -77,6 +106,7 @@ def getUserInput(config, **kwargs):
         choiceColour="green",
         choiceStyle="bright",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
     )
     # get video selection
     videoLinks = getUserList(
@@ -87,6 +117,8 @@ def getUserInput(config, **kwargs):
         itemStyle="bright",
         itemName="video",
         margin=colMargin,
+        yes=getattr(args, "yes", None),
+        list=getattr(args, "video", None),
     )
 
     return {
@@ -160,7 +192,7 @@ def downloadVideos(config, queue, **kwargs):
 
     # print failed downloads
     if failedDownloads:
-        errorMessage = "ezdl had trouble downloading these videos:"
+        errorMessage = "%s had trouble downloading these videos:" % __app_name__
         print(writeError(errorMessage), "\n")
         # create columns
         colDict, colMaxLen = createColumns(headers, [failedDownloads.keys(), failedDownloads.values()], margin=colMargin)
@@ -168,7 +200,7 @@ def downloadVideos(config, queue, **kwargs):
         printColumns(colDict, colMaxLen, header=False)
         # write failed downloads to log
         installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
-        logFile = os.path.expanduser("%s/share/ezdl/log/ezdl.log" % installPrefix)
+        logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
         with open(logFile, "a") as f:
             f.write("\n" + errorMessage + " " + " ".join(failedDownloads.values()))
     # print success message
@@ -180,17 +212,48 @@ def downloadVideos(config, queue, **kwargs):
 
 if __name__ == "__main__":
     try:
+        # predefined values
         margin = 5
+        # get user arguments
+        arguments = [
+            {
+                "names": ["-v", "--version"],
+                "kwargs": {
+                    "help": "return the version of the script",
+                    "action": "store_true",
+                }
+            },
+            {
+                "names": ["-l", "--video"],
+                "kwargs": {
+                    "help": "provide a list of video links to download",
+                    "type": str,
+                    "nargs": "+",
+                }
+            },
+            {
+                "names": ["-y", "--yes"],
+                "kwargs": {
+                    "help": "say yes to all defaults",
+                    "action": "store_true",
+                }
+            },
+        ]
+        parser, args = get_args(arguments)
+        # return script version
+        if args.version:
+            print("%s: %s" % (__app_name__, __app_version__))
+            exit(0)
         # read user config
-        configFile = os.path.expanduser("~/.config/ezdl/ezdl.json")
-        config = readJson(configFile)
+        configFile = resolvePath("~/.config/ezdl/ezdl.json")
+        config = readJson(configFile, required=True)
         # get user queue
-        queue = getUserInput(config, margin=margin)
+        queue = getUserInput(config, args=args, margin=margin)
         # download videos
         downloadVideos(config, queue, margin=margin, skipSanitise=False)
     except KeyboardInterrupt:
-        print("\n\n", "👋 Goodbye!")
+        print("\n\n%s" % "👋 Goodbye!")
         exit(0)
     except Exception as e:
-        print("\n\n", writeError("ERROR: %s" % e))
+        print("\n\n%s" % writeError("ERROR: %s" % e))
         exit(1)

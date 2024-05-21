@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+#
+#         :::   :::  ::::::::::::::    :::    :::
+#       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
+#     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+# ###       #################    ######     ###
+#
+# ezdl-utils: Utility functions written for the ezdl tool.
+
+
 import json
 import os
 from colorama import (
@@ -10,6 +23,11 @@ from pathlib import Path
 # normalise string
 def normaliseString(s):
     return s.strip() if s and isinstance(s, str) else s
+
+
+# resolve provided path
+def resolvePath(path):
+    return os.path.abspath(os.path.expanduser(path)) if path else None
 
 
 # create intro title
@@ -35,7 +53,7 @@ def readConfig(configFile):
             configContent = f.read()
             config = {normaliseString(x.split("=", 1)[0]): normaliseString(x.split("=", 1)[1]) for x in configContent.splitlines()}
     else:
-        print("⚠️ Config file not found! (%s)" % configFile)
+        print(writeWarning("Config file not found! (%s)" % configFile))
     return config
 
 
@@ -46,13 +64,18 @@ def getConfigValue(config, key, **kwargs):
 
 
 # read json file
-def readJson(jsonFile):
+def readJson(jsonFile, **kwargs):
+    required = kwargs.get("required", False)
+    silent = kwargs.get("silent", False)
     data = {}
     if Path(jsonFile).is_file():
         with open(jsonFile, "r") as f:
             data = json.load(f)
     else:
-        print("⚠️ JSON file not found! (%s)" % jsonFile)
+        if not silent:
+            print(writeWarning("JSON file not found! (%s)" % jsonFile))
+        if required:
+            exit(1)
     return data
 
 
@@ -60,7 +83,7 @@ def readJson(jsonFile):
 def syncCookies(cookiesDir):
     cookiesDict = {}
     # get cookies directory
-    cookiesPath = Path(os.path.expanduser(cookiesDir)) if cookiesDir else None
+    cookiesPath = Path(resolvePath(cookiesDir)) if cookiesDir else None
     if cookiesPath and cookiesPath.is_dir():
         # get available cookies
         cookies = os.listdir(cookiesPath)
@@ -71,10 +94,11 @@ def syncCookies(cookiesDir):
                 cookieName = normaliseString(f.lower().replace(".txt", ""))
                 cookiesDict[cookieName] = cookie
     if cookiesDict:
+        # add option to not use cookies if the "reserved" key does not exist
+        if "anonymous" not in cookiesDict:
+            cookiesDict["anonymous"] = None
         # sort cookies alphabetically
         cookiesDict = dict(sorted(cookiesDict.items()))
-        # add option to not use cookies
-        cookiesDict["anonymous"] = None
     return cookiesDict
 
 
@@ -125,6 +149,11 @@ def writeError(message):
     return colouriseString("🚨 %s" % message, colour="red")
 
 
+# write warning message
+def writeWarning(message):
+    return colouriseString("⚠️ %s" % message, colour="yellow")
+
+
 # select from dict
 def selectFromDict(data, **kwargs):
     choice = None
@@ -139,21 +168,22 @@ def selectFromDict(data, **kwargs):
     choiceStyle = kwargs.get("choiceStyle", itemStyle)
     descKey = kwargs.get("desc")
     defaultPick = kwargs.get("default")
+    yesToDefault = kwargs.get("yes", False)
 
-    # exit if data is empty
-    if not data:
-        return None
-
-    # clean data into dict
+    # parse data into dict
     if isinstance(data, dict):
         data = {normaliseString(k): normaliseString(v) for k, v in data.items()}
-    else:
+    elif isinstance(data, str):
         # split string data by comma into a list and create dict where key is index and value is item
-        data = {"Option %s" % str(i): normaliseString(v) for i, v in enumerate(data.split(","), 1)}
+        data = {"Option %s" % str(i): v for i, (v) in enumerate((x for x in data.split(",") if x), 1)}
+
+    # exit if data is empty or has not be parsed into a dict
+    if not data or not isinstance(data, dict):
+        return None
 
     # determine default pick
-    if data and not defaultPick:
-        defaultPick = list(data.keys())[0] if data else None
+    if not defaultPick or defaultPick not in list(data.keys()):
+        defaultPick = list(data.keys())[0]
 
     # print intro
     if intro:
@@ -174,7 +204,8 @@ def selectFromDict(data, **kwargs):
 
     # get user choice
     if defaultPick:
-        choice = input("Please select your choice [%s]: " % defaultPick).strip()
+        if not yesToDefault:
+            choice = input("Please select your choice [%s]: " % defaultPick).strip()
         choice = choice if choice and validateChoice(choice, data, offset=indexOffset) else list(data.keys()).index(defaultPick) + indexOffset
     else:
         while not validateChoice(choice, data, offset=indexOffset):
@@ -189,7 +220,9 @@ def selectFromDict(data, **kwargs):
 
 # get user list
 def getUserList(**kwargs):
-    userList = []
+    confirm = None
+    userList = kwargs.get("list")
+    userList = userList if userList and (isinstance(userList, list) or isinstance(userList, str)) else []
     colMargin = kwargs.get("margin")
     intro = kwargs.get("intro")
     introColour = kwargs.get("introColour")
@@ -197,25 +230,30 @@ def getUserList(**kwargs):
     itemColour = kwargs.get("itemColour")
     itemStyle = kwargs.get("itemStyle")
     itemName = kwargs.get("item", "Item")
+    yesToDefault = kwargs.get("yes", False)
 
     # print intro
     if intro:
         print(createIntro(intro, colour=introColour, style=introStyle), "\n")
 
     # get user input
-    loop = True
-    index = 0
-    while loop:
-        index += 1
-        item = input("%s %s: " % (itemName.capitalize(), index)).strip()
-        if item:
-            # split item by whitespace
-            for i in item.split(" "):
-                index += 1
-                userList.append(i.strip())
-            index -= 1
-        else:
-            loop = False
+    if not userList:
+        loop = True
+        index = 0
+        while loop:
+            index += 1
+            item = input("%s %s: " % (itemName.capitalize(), index)).strip()
+            if item:
+                # split item by whitespace
+                for i in item.split(" "):
+                    index += 1
+                    userList.append(i.strip())
+                index -= 1
+            else:
+                loop = False
+    # parse to list if user list is provided as string
+    elif isinstance(userList, str):
+        userList = [i.strip() for i in userList.split(" ") if i.strip()]
 
     # print list
     if userList:
@@ -233,8 +271,9 @@ def getUserList(**kwargs):
         printColumns(colDict, colMaxLen)
 
         # get user confirmation
-        confirm = input("Do you want to proceed with the above list? [Y/n]: ").strip().lower()
-        print()
-        if not confirm in ["n", "no"]:
+        if not yesToDefault:
+            confirm = input("Do you want to proceed with the above list? [Y/n]: ").strip().lower()
+            print()
+        if yesToDefault or not confirm in ["n", "no"]:
             return userList
     return None

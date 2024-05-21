@@ -1,30 +1,80 @@
 #!/usr/bin/env bash
+#
+#         :::   :::  ::::::::::::::    :::    :::
+#       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
+#     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+# ###       #################    ######     ###
+#
+# installer: Project installer script.
 
 
-# constants
-APP_NAME="ezdl"
-APP_NAMESPACE="ezdl"
+# source project metadata
+source "./share/metadata.py"
 
 
 # print help message
-function print_help() {
+function help() {
     echo "Usage: ${0} [options]"; echo
     echo "OPTIONS:"
-    echo "  -h, --help                           Print help message"
-    # echo "  -c, --config-prefix <prefix>         Specify a config prefix"
-    echo "  -i, --install-prefix <prefix>        Specify an installation prefix"
-    echo "  -l, --link-install                   Perform a symlink installation"
-    echo "  -u, --uninstall                      Uninstall application"
+    # echo "  -c, --config-prefix <path>        Specify a config prefix"
+    echo "  -i, --install-prefix <path>       Specify an installation prefix"
+    echo "  -l, --link-install                Perform a symlink installation"
+    echo "  -u, --uninstall                   Uninstall application"
+    echo "  -v, --version                     Return the version of the script"
+    echo "  -h, --help                        Print help message"; echo
+    echo "Report bugs to ${__source__}/issues"
 }
 
+
+# install script
+function install() {
+    echo "Installing ${__name__} v${__version__} to ${INSTALL_PFX}"
+    # check for required files before proceeding
+    for file in "${!required_files[@]}"; do
+        if [[ ! -f "${file}" ]]; then
+            echo "ERROR: Required file not found (${file})"
+            exit 1
+        fi
+    done
+    # create required directories
+    for dir in "${required_directories[@]}"; do
+        echo "Creating directory ${dir}"
+        mkdir -p "${dir}"
+    done
+    # copy required files
+    for file in "${!required_files[@]}"; do
+        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
+            echo "Copying ${file} to ${required_files[${file}]}"
+            cp -i "${file}" "${required_files[${file}]}"
+        else
+            echo "Symlinking ${file} to ${required_files[${file}]}"
+            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
+        fi
+    done
+}
+
+
+# uninstall script
+function uninstall() {
+    echo "Uninstalling ${__name__} from ${INSTALL_PFX}"
+    # remove target locations
+    for file in "${!required_files[@]}"; do
+        if [[ -e "${required_files[${file}]}" ]]; then
+            echo "Removing ${required_files[${file}]}"
+            rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
+        fi
+    done
+}
+
+
+# ================= DO NOT EDIT BEYOND THIS LINE =================
 
 # get optional arguments
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
-        -h|--help)
-            print_help
-            exit 0
-            ;;
         # -c|--config-prefix)
         #     if [ -z "${2}" ]; then
         #         echo "ERROR: Please specify a config prefix"
@@ -35,7 +85,7 @@ while [[ ${#} -gt 0 ]]; do
         #     ;;
         -i|--install-prefix)
             if [ -z "${2}" ]; then
-                echo "ERROR: Please specify a install prefix"
+                echo "ERROR: Please specify an installation prefix"
                 exit 1
             fi
             INSTALL_PFX="${2}"
@@ -46,6 +96,14 @@ while [[ ${#} -gt 0 ]]; do
             ;;
         -u|--uninstall)
             UNINSTALL_APP=1
+            ;;
+        -v|--version)
+            echo "${__version__}"
+            exit 0
+            ;;
+        -h|--help)
+            help
+            exit 0
             ;;
         *)
             echo "ERROR: Invalid argument (${1})"
@@ -70,13 +128,13 @@ INSTALL_PFX=$(realpath "${INSTALL_PFX}") || exit 1
 
 # associative array of required files and their target locations
 declare -A required_files=(
-    ["bin/main.py"]="${INSTALL_PFX}/bin/${APP_NAME}"
-    ["share/metadata.py"]="${INSTALL_PFX}/share/${APP_NAMESPACE}/"
-    ["share/parser.py"]="${INSTALL_PFX}/share/${APP_NAMESPACE}/"
-    ["share/utils.py"]="${INSTALL_PFX}/share/${APP_NAMESPACE}/"
-    ["log/${APP_NAME}.log"]="${INSTALL_PFX}/share/${APP_NAMESPACE}/log/"
-    ["config/${APP_NAME}.json"]="${CONFIG_PFX}/${APP_NAMESPACE}/"
-    ["config/source.json"]="${CONFIG_PFX}/${APP_NAMESPACE}/"
+    ["bin/main.py"]="${INSTALL_PFX}/bin/${__name__}"
+    ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/"
+    ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/"
+    ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/"
+    ["log/${__name__}.log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
+    ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
+    ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
 )
 
 
@@ -88,38 +146,6 @@ for dir in "${required_files[@]}"; do
         required_directories+=("${dir%/*}")
     fi
 done
-
-
-# install script
-function install() {
-    echo "Installing ${APP_NAME} to ${INSTALL_PFX}"
-    # create required directories
-    for dir in "${required_directories[@]}"; do
-        echo "Creating directory ${dir}"
-        mkdir -p "${dir}"
-    done
-    # copy required files
-    for file in "${!required_files[@]}"; do
-        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
-            echo "Copying ${file} to ${required_files[${file}]}"
-            cp -i "${file}" "${required_files[${file}]}"
-        else
-            echo "Symlinking ${file} to ${required_files[${file}]}"
-            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
-        fi
-    done
-}
-
-
-# uninstall script
-function uninstall() {
-    echo "Uninstalling ${APP_NAME} from ${INSTALL_PFX}"
-    # remove target locations
-    for file in "${!required_files[@]}"; do
-        echo "Removing ${required_files[${file}]}"
-        rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
-    done
-}
 
 
 # install or uninstall
