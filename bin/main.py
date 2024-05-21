@@ -95,9 +95,10 @@ def getUserInput(config, **kwargs):
         yes=getattr(args, "yes", None),
     )
     # get cookie selection
+    cookieFile = getConfigValue(getConfigValue(list(source.values())[0], "opts") if source else None, "cookiefile")
     cookie = selectFromDict(
         cookiesDict,
-        default=getConfigValue(config, "default_cookie", default="anonymous"),
+        default=getConfigValue(config, "default_cookie", default="anonymous") if not cookieFile else cookieFile,
         intro="cookie",
         introColour="green",
         introStyle="bright",
