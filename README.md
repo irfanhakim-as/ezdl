@@ -6,6 +6,12 @@
 
 ## Requirements
 
+### Operating System
+
+- `Linux`
+- `macOS`
+- `Windows` **ONLY** through [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+
 ### System software
 
 - `bash` 5.0+
