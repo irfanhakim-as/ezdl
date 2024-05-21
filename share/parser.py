@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+#
+#         :::   :::  ::::::::::::::    :::    :::
+#       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
+#     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+# ###       #################    ######     ###
+#
+# ezdl-parser: Parsing functions written for the ezdl tool.
+
+
 # sanitise video list
 def sanitiseVideoList(videoList):
     # reformat vimeo links

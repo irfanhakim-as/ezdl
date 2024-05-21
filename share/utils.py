@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+#
+#         :::   :::  ::::::::::::::    :::    :::
+#       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
+#     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+# ###       #################    ######     ###
+#
+# ezdl-utils: Utility functions written for the ezdl tool.
+
+
 import json
 import os
 from colorama import (
