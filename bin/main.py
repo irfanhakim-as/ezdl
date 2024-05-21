@@ -82,7 +82,7 @@ def getUserInput(config, **kwargs):
     )
     # get download path selection
     downloadPath = selectFromDict(
-        getConfigValue(config, "download_paths", default={"default": "~/Downloads", "current": "."}),
+        getConfigValue(config, "download_paths", default={"downloads": "~/Downloads", "current": "."}),
         default=getConfigValue(config, "default_download_path"),
         intro="path",
         introColour="blue",
