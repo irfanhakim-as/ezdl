@@ -3,7 +3,5 @@
     "download_paths": {
         "downloads": "~/Downloads",
         "current": "."
-    },
-    "install_pfx": "~/.local",
-    "skip_sanitise": false
+    }
 }
