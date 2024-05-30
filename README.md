@@ -88,6 +88,7 @@ They are both installed to `~/.config/ezdl` by default.
 | `default_cookie` | The default cookie (`.txt`) file name to use/suggest. | `cookies` if the file name is `cookies.txt` | `anonymous` or the first available cookie if any |
 | `default_download_path` | The default download path name to use/suggest. | `current` | `downloads` or the first available download path |
 | `default_source` | The default source profile name to use/suggest. | `twitter` | `yt_best` or the first available source profile |
+| `download_auto_subs` | Specifies whether or not **ezdl** should download automatically generated video subtitles. | `true` | `false` |
 | `download_paths` | A dictionary of download path options comprised of their name and path. | `{"videos": "~/Videos", "movies": "~/Movies"}` | `{"downloads": "~/Downloads", "current": "."}` |
 | `download_subtitles` | Specifies whether or not **ezdl** should download video subtitles. | `true` | `false` |
 | `install_pfx` | The prefix where **ezdl** was installed. Update this if it's been changed. | `/usr/local` | `~/.local` |
