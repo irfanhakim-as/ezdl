@@ -63,6 +63,12 @@ def getConfigValue(config, key, **kwargs):
     return config.get(key) if config and (config.get(key) or config.get(key) is False) else default
 
 
+# determine config value which prioritises opts
+def determineConfig(config, opts, configKey, optsKey, default=None):
+    configValue = getConfigValue(config, configKey, default=default)
+    return getConfigValue(opts, optsKey, default=configValue)
+
+
 # read json file
 def readJson(jsonFile, **kwargs):
     required = kwargs.get("required", False)
