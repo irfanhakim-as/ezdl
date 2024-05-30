@@ -134,6 +134,8 @@ def getUserInput(config, **kwargs):
 def downloadVideos(config, queue, **kwargs):
     failedDownloads = {}
     colMargin = kwargs.get("margin")
+
+    # get config values
     skipSanitise = getConfigValue(config, "skip_sanitise", default=False)
 
     # get raw queue dicts
