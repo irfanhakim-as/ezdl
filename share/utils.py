@@ -60,7 +60,13 @@ def readConfig(configFile):
 # get value from config dict
 def getConfigValue(config, key, **kwargs):
     default = kwargs.get("default")
-    return config.get(key) if config and config.get(key) else default
+    return config.get(key) if config and (config.get(key) or config.get(key) is False) else default
+
+
+# determine config value which prioritises opts
+def determineConfig(config, opts, configKey, optsKey, default=None):
+    configValue = getConfigValue(config, configKey, default=default)
+    return getConfigValue(opts, optsKey, default=configValue)
 
 
 # read json file

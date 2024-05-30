@@ -89,8 +89,11 @@ They are both installed to `~/.config/ezdl` by default.
 | `default_download_path` | The default download path name to use/suggest. | `current` | `downloads` or the first available download path |
 | `default_source` | The default source profile name to use/suggest. | `twitter` | `yt_best` or the first available source profile |
 | `download_paths` | A dictionary of download path options comprised of their name and path. | `{"videos": "~/Videos", "movies": "~/Movies"}` | `{"downloads": "~/Downloads", "current": "."}` |
+| `download_subtitles` | Specifies whether or not **ezdl** should download video subtitles. | `true` | `false` |
 | `install_pfx` | The prefix where **ezdl** was installed. Update this if it's been changed. | `/usr/local` | `~/.local` |
 | `skip_sanitise` | Specifies whether or not **ezdl** should skip sanitising video links. | `true` | `false` |
+| `subtitle_format` | The preferred subtitle format to download if available. | `vtt` | `srt` |
+| `subtitle_lang` | A list of language codes to download video subtitles for. | `["ja", "ko"]` | `["en.*"]` |
 
 ## Usage
 

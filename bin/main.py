@@ -27,6 +27,7 @@ from parser import (
 from utils import (
     colouriseString,
     createColumns,
+    determineConfig,
     getConfigValue,
     getUserList,
     printColumns,
@@ -95,10 +96,9 @@ def getUserInput(config, **kwargs):
         yes=getattr(args, "yes", None),
     )
     # get cookie selection
-    cookieFile = getConfigValue(getConfigValue(list(source.values())[0], "opts") if source else None, "cookiefile")
     cookie = selectFromDict(
         cookiesDict,
-        default=getConfigValue(config, "default_cookie", default="anonymous") if not cookieFile else cookieFile,
+        default=determineConfig(config, getConfigValue(list(source.values())[0], "opts") if source else None, "default_cookie", "cookiefile", default="anonymous"),
         intro="cookie",
         introColour="green",
         introStyle="bright",
@@ -134,6 +134,8 @@ def getUserInput(config, **kwargs):
 def downloadVideos(config, queue, **kwargs):
     failedDownloads = {}
     colMargin = kwargs.get("margin")
+
+    # get config values
     skipSanitise = getConfigValue(config, "skip_sanitise", default=False)
 
     # get raw queue dicts
@@ -156,11 +158,21 @@ def downloadVideos(config, queue, **kwargs):
         print("\n", writeError("Invalid queue!"))
         exit(1)
 
+    # determine config based on opts
+    downloadSubs = determineConfig(config, sourceOpts, "download_subtitles", "writesubtitles", default=False)
+    subLang = determineConfig(config, sourceOpts, "subtitle_lang", "subtitleslangs", default=("en.*",))
+    subFormat = determineConfig(config, sourceOpts, "subtitle_format", "subtitlesformat", default="srt")
+
     # add cookie to opts if available
     if cookiePath:
         sourceOpts["cookiefile"] = cookiePath
     # add download path to output template
     sourceOpts["outtmpl"] = sourceOpts["outtmpl"].format(path=downloadPath)
+    # add subtitle options if applicable
+    if downloadSubs:
+        sourceOpts["writesubtitles"] = downloadSubs
+        sourceOpts["subtitleslangs"] = subLang
+        sourceOpts["subtitlesformat"] = subFormat
     # add embedder if applicable: https://github.com/ytdl-org/youtube-dl/issues/13009#issuecomment-375724086
     if sourceEmbedder:
         youtube_dl.utils.std_headers["Referer"] = sourceEmbedder
