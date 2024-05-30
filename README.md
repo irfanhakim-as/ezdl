@@ -70,7 +70,7 @@
 
     By default, the installer will install the project to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
 
-## Configurations
+## Configuration
 
 There are two configuration files available that are provided by default after installation:
 
