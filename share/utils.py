@@ -228,7 +228,8 @@ def selectFromDict(data, **kwargs):
 def getUserList(**kwargs):
     confirm = None
     userList = kwargs.get("list")
-    userList = userList if userList and (isinstance(userList, list) or isinstance(userList, str)) else []
+    # userList = userList if userList and (isinstance(userList, list) or isinstance(userList, str)) else []
+    userList = " ".join(userList) if isinstance(userList, list) else userList if isinstance(userList, str) else []
     colMargin = kwargs.get("margin")
     intro = kwargs.get("intro")
     introColour = kwargs.get("introColour")
