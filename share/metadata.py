@@ -13,7 +13,7 @@
 
 __name__="ezdl"
 __namespace__="ezdl"
-__version__="0.2.3"
+__version__="0.2.4"
 __description__="Video downloader script for YouTube, Instagram, Tik Tok, and more."
 __author__="irfanhakim"
 __author_email__="irfanhakim.as@yahoo.com"
