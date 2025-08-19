@@ -120,6 +120,7 @@ def getUserInput(config, **kwargs):
         margin=colMargin,
         yes=getattr(args, "yes", None),
         list=getattr(args, "video", None),
+        sanitise=getConfigValue(config, "sanitise_links", default=True),
     )
 
     return {
@@ -136,7 +137,7 @@ def downloadVideos(config, queue, **kwargs):
     colMargin = kwargs.get("margin")
 
     # get config values
-    skipSanitise = getConfigValue(config, "skip_sanitise", default=False)
+    # sanitiseLinks = getConfigValue(config, "sanitise_links", default=True)
 
     # get raw queue dicts
     sourceDict = getConfigValue(queue, "source")
@@ -151,7 +152,7 @@ def downloadVideos(config, queue, **kwargs):
     sourceOpts = getConfigValue(source, "opts")
     downloadPath = list(downloadPathDict.values())[0] if downloadPathDict else None
     cookiePath = list(cookieDict.values())[0] if cookieDict else None
-    videoList = sanitiseVideoList(videoList) if not skipSanitise else videoList
+    # videoList = sanitiseVideoList(videoList) if sanitiseLinks else videoList
 
     # quit if any of the required values are missing
     if not (sourceOpts and downloadPath and videoList):
@@ -265,7 +266,7 @@ if __name__ == "__main__":
         # get user queue
         queue = getUserInput(config, args=args, margin=margin)
         # download videos
-        downloadVideos(config, queue, margin=margin, skipSanitise=False)
+        downloadVideos(config, queue, margin=margin)
     except KeyboardInterrupt:
         print("\n\n%s" % "👋 Goodbye!")
         exit(0)

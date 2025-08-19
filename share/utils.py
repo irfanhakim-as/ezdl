@@ -13,11 +13,17 @@
 
 import json
 import os
+import sys
 from colorama import (
     Fore,
     Style,
 )
 from pathlib import Path
+project_path = "."
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
+from parser import (
+    sanitiseVideoList,
+)
 
 
 # normalise string
@@ -238,6 +244,7 @@ def getUserList(**kwargs):
     itemStyle = kwargs.get("itemStyle")
     itemName = kwargs.get("item", "Item")
     yesToDefault = kwargs.get("yes", False)
+    sanitise = kwargs.get("sanitise", False)
 
     # print intro
     if intro:
@@ -261,6 +268,9 @@ def getUserList(**kwargs):
     # parse to list if user list is provided as string
     elif isinstance(userList, str):
         userList = [i.strip() for i in userList.split(" ") if i.strip()]
+
+    # sanitise list
+    userList = sanitiseVideoList(userList) if sanitise else userList
 
     # print list
     if userList:

@@ -11,10 +11,15 @@
 # ezdl-parser: Parsing functions written for the ezdl tool.
 
 
+import re
+
+
 # sanitise video list
 def sanitiseVideoList(videoList):
     # reformat vimeo links
-    videoList = [l[:l.rfind("/") + 1].replace("vimeo.com/", "player.vimeo.com/video/").rstrip("/") if l.startswith("https://vimeo.com") else l for l in videoList]
+    videoList = ["https://player.vimeo.com/video/%s" % re.search(r'vimeo\.com/(\d+)', l).group(1) if l.startswith("https://vimeo.com") else l for l in videoList]
     # reformat xitter links
-    videoList = [l.replace("x.com/", "twitter.com/").rstrip("/") if l.startswith("https://x.com") else l for l in videoList]
+    videoList = [l.replace("x.com/", "twitter.com/").strip().rstrip("/") if l.startswith("https://x.com") else l for l in videoList]
+    # clean instagram links
+    videoList = [l.split("?")[0].strip().rstrip("/") if "instagram.com" in l else l for l in videoList]
     return videoList
