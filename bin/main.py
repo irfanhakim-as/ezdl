@@ -265,7 +265,7 @@ if __name__ == "__main__":
         # get user queue
         queue = getUserInput(config, args=args, margin=margin)
         # download videos
-        downloadVideos(config, queue, margin=margin, skipSanitise=False)
+        downloadVideos(config, queue, margin=margin)
     except KeyboardInterrupt:
         print("\n\n%s" % "👋 Goodbye!")
         exit(0)
