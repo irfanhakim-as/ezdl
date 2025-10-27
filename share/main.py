@@ -21,9 +21,9 @@ from metadata import (
     __name__ as __app_name__,
     __version__ as __app_version__,
 )
-from parser import (
-    sanitiseVideoList,
-)
+# from parser import (
+#     sanitiseVideoList,
+# )
 from utils import (
     colouriseString,
     createColumns,
