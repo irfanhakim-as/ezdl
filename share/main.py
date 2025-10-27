@@ -69,7 +69,7 @@ def getUserInput(config, **kwargs):
     # get source selection
     source = selectFromDict(
         sourceDict,
-        default=getConfigValue(config, "default_source", default="yt_best"),
+        default=getConfigValue(config, "default_source"),
         intro="source",
         introColour="red",
         introStyle="bright",
