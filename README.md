@@ -8,9 +8,9 @@
 
 ### Operating System
 
-- `Linux`
-- `macOS`
-- `Windows` **ONLY** through [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+- Linux
+- macOS
+- Windows (using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
 
 ### System software
 
@@ -31,9 +31,11 @@
 
 - Easy to use with essentially nothing to remember or recall when you need to download a video.
 - Very fast downloads and compatible with videos from a huge list of sources thanks to the [**yt-dlp**](https://github.com/yt-dlp/yt-dlp) project.
-- Custom sanitisation/parsing options for video links i.e. automatically changing `vimeo.com` links to `player.vimeo.com`, `x.com` links to `twitter.com`, and so on. **[EXPERIMENTAL]**
+- Custom sanitisation/parsing options for video links (i.e. automatically changing `vimeo.com` links to `player.vimeo.com`, `x.com` links to `twitter.com`, and removes tracking code from certain sites that are known to have them).
 
 ## Installation
+
+Follow these steps to install or update the programme for a single user or system-wide:
 
 1. Ensure that you have met all of the project [requirements](#requirements).
 
