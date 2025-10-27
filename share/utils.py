@@ -33,7 +33,16 @@ def normaliseString(s):
 
 # resolve provided path
 def resolvePath(path):
-    return os.path.abspath(os.path.expanduser(path)) if path else None
+    # return nothing if path not provided
+    if not path: return None
+    # expand user home directory
+    expanded = os.path.expanduser(path)
+    # make relative path relative to script location
+    if not os.path.isabs(expanded):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        expanded = os.path.join(script_dir, expanded)
+    # normalise and return absolute path
+    return os.path.abspath(expanded)
 
 
 # create intro title
