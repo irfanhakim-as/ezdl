@@ -171,6 +171,7 @@ declare -A required_files=(
     [".log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
     ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
     ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
+    [".venv"]="${VENV_PFX}/.venv/"
 )
 
 
