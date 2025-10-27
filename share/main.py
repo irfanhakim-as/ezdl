@@ -28,10 +28,11 @@ from utils import (
     colouriseString,
     createColumns,
     determineConfig,
+    ensureConfig,
     getConfigValue,
     getUserList,
     printColumns,
-    readJson,
+    # readJson,
     resolvePath,
     selectFromDict,
     syncCookies,
@@ -63,8 +64,9 @@ def getUserInput(config, **kwargs):
     # list user cookies
     cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
-    sourceFile = resolvePath("~/.config/ezdl/source.json")
-    sourceDict = readJson(sourceFile, required=True)
+    # sourceFile = resolvePath("~/.config/ezdl/source.json")
+    # sourceDict = readJson(sourceFile, required=True)
+    sourceDict = ensureConfig("source.json")
 
     # get source selection
     source = selectFromDict(
@@ -262,8 +264,9 @@ if __name__ == "__main__":
             print("%s: %s" % (__app_name__, __app_version__))
             exit(0)
         # read user config
-        configFile = resolvePath("~/.config/ezdl/ezdl.json")
-        config = readJson(configFile, required=True)
+        # configFile = resolvePath("~/.config/ezdl/ezdl.json")
+        # config = readJson(configFile, required=True)
+        config = ensureConfig("ezdl.json")
         # get user queue
         queue = getUserInput(config, args=args, margin=margin)
         # download videos
