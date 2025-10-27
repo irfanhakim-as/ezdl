@@ -37,6 +37,7 @@ from utils import (
     selectFromDict,
     syncCookies,
     writeError,
+    writeToLog,
     writeWarning,
 )
 
@@ -219,9 +220,7 @@ def downloadVideos(config, queue, **kwargs):
         # write failed downloads to log
         # installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
         # logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
-        logFile = resolvePath("../log/ezdl.log")
-        with open(logFile, "a") as f:
-            f.write(errorMessage + " " + " ".join(failedDownloads.values()) + "\n")
+        writeToLog(errorMessage + " " + " ".join(failedDownloads.values()))
     # print success message
     else:
         print("✌️ All videos downloaded successfully!")

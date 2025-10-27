@@ -61,6 +61,12 @@ def colouriseString(s, **kwargs):
     return "{colour}{style}{s}{reset}".format(colour=colour, style=style, s=s, reset=reset)
 
 
+# write to log file
+def writeToLog(message, logFile=resolvePath("../log/ezdl.log")):
+    os.makedirs(os.path.dirname(logFile), exist_ok=True)
+    with open(logFile, "a") as f: f.write("%s\n" % message)
+
+
 # read config file
 def readConfig(configFile):
     config = {}
