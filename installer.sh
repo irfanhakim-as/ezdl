@@ -34,7 +34,7 @@ function install() {
     echo "Installing ${__name__} v${__version__} to ${INSTALL_PFX}"
     # check for required files before proceeding
     for file in "${!required_files[@]}"; do
-        if [[ ! -f "${file}" ]]; then
+        if [[ ! "${file}" =~ ^\. ]] && [[ ! -f "${file}" ]]; then
             echo "ERROR: Required file not found (${file})"
             exit 1
         fi
@@ -46,6 +46,9 @@ function install() {
     done
     # copy required files
     for file in "${!required_files[@]}"; do
+        if [[ "${file}" =~ ^\. ]]; then
+            continue
+        fi
         if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
             echo "Copying ${file} to ${required_files[${file}]}"
             cp -i "${file}" "${required_files[${file}]}"
