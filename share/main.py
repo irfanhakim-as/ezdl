@@ -219,7 +219,7 @@ def downloadVideos(config, queue, **kwargs):
         # logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
         logFile = resolvePath("../log/ezdl.log")
         with open(logFile, "a") as f:
-            f.write("\n" + errorMessage + " " + " ".join(failedDownloads.values()))
+            f.write(errorMessage + " " + " ".join(failedDownloads.values()) + "\n")
     # print success message
     else:
         print("✌️ All videos downloaded successfully!")
