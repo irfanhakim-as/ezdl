@@ -29,6 +29,34 @@ function help() {
 }
 
 
+# setup virtual environment
+function setup_venv() {
+    local venv_path="${VENV_PFX}/.venv"
+    echo "Setting up virtual environment at ${venv_path}"
+    # check if python3 is available
+    if ! command -v python3 &> /dev/null; then
+        echo "ERROR: python3 not found"
+        exit 1
+    fi
+    # create venv if it does not exist
+    if [[ ! -f "${venv_path}/bin/python" ]]; then
+        python3 -m venv "${venv_path}" || {
+            echo "ERROR: Failed to create virtual environment"
+            exit 1
+        }
+    fi
+    # install dependencies if requirements.txt exists
+    if [[ -f "requirements.txt" ]]; then
+        echo "Installing dependencies to virtual environment"
+        "${venv_path}/bin/pip" install --upgrade pip
+        "${venv_path}/bin/pip" install -r requirements.txt || {
+            echo "ERROR: Failed to install dependencies"
+            exit 1
+        }
+    fi
+}
+
+
 # install script
 function install() {
     echo "Installing ${__name__} v${__version__} to ${INSTALL_PFX}"
