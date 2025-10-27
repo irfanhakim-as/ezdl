@@ -128,6 +128,11 @@ if [ -z "${INSTALL_PFX}" ]; then
 fi
 INSTALL_PFX=$(realpath "${INSTALL_PFX}") || exit 1
 
+if [ -z "${VENV_PFX}" ]; then
+    VENV_PFX="${INSTALL_PFX}/share/${__namespace__}"
+fi
+VENV_PFX=$(realpath "${VENV_PFX}") || exit 1
+
 
 # associative array of required files and their target locations
 declare -A required_files=(
