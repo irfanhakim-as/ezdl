@@ -172,8 +172,8 @@ declare -A required_files=(
     ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     [".log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
-    ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
-    ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
+    ["config/${__name__}.json"]="${INSTALL_PFX}/share/${__namespace__}/config/"
+    ["config/source.json"]="${INSTALL_PFX}/share/${__namespace__}/config/"
     [".venv"]="${VENV_PFX}/.venv/"
 )
 
