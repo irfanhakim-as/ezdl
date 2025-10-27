@@ -18,11 +18,6 @@
 - `ffmpeg` 6.1.1+
 - `python` 3.0+
 
-### Python library (pip)
-
-- `colorama` 0.4.4+
-- `yt-dlp` 2023.7.6+
-
 ## Features
 
 - Simple yet useful [configuration](#configurations) options to get things done the way you want it and to have that process reproducible.
