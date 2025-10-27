@@ -3,9 +3,9 @@
 #         :::   :::  ::::::::::::::    :::    :::
 #       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
 #     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
-#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
-#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
-#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://l.irfanhak.im/links
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#
 # ###       #################    ######     ###
 #
 # installer: Project installer script.
