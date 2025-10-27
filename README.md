@@ -72,11 +72,17 @@
 
 ## Configuration
 
-There are two configuration files available that are provided by default after installation:
+There are two configuration files available that are provided by default after [using **ezdl**](#usage) for the first time:
 
-- `ezdl.json`: Configuration options pertaining to the **ezdl** tool. All supported options are detailed below.
+- [`ezdl.json`](config/ezdl.json): Configuration options pertaining to the **ezdl** tool. All supported options are detailed below.
 
-- `source.json`: Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading i.e. one profile for downloading YouTube videos as `mp4` files while another profile for downloading YouTube videos as `mp3` files. Examples can be found in the provided [`source.json`](config/source.json) file.
+- [`source.json`](config/source.json): Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading, for example:
+
+  - One profile for downloading YouTube videos as `mp4` files
+  - Another profile for downloading YouTube videos as `mp3` files
+  - A profile for downloading videos off of social media sites like Twitter or Instagram
+
+  Each of these profiles could be customised according to their specific needs (i.e. different quality preferences, formats, cookies, etc.)
 
 They are both installed to `~/.config/ezdl` by default.
 
