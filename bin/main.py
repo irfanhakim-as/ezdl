@@ -215,8 +215,9 @@ def downloadVideos(config, queue, **kwargs):
         # print column items
         printColumns(colDict, colMaxLen, header=False)
         # write failed downloads to log
-        installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
-        logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
+        # installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
+        # logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
+        logFile = resolvePath("../log/ezdl.log")
         with open(logFile, "a") as f:
             f.write("\n" + errorMessage + " " + " ".join(failedDownloads.values()))
     # print success message
