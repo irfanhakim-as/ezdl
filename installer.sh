@@ -156,7 +156,11 @@ done
 # CONFIG_PFX=$(realpath "${CONFIG_PFX}") || exit 1
 
 if [ -z "${INSTALL_PFX}" ]; then
-    INSTALL_PFX="${HOME}/.local"
+    if [ "${EUID}" -eq 0 ]; then
+        INSTALL_PFX="/usr/local"
+    else
+        INSTALL_PFX="${HOME}/.local"
+    fi
 fi
 INSTALL_PFX=$(realpath "${INSTALL_PFX}") || exit 1
 
