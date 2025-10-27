@@ -54,21 +54,29 @@
     cd ~/.ezdl
     ```
 
-4. Use the installer script:
+4. Install using the provided installer script.
 
-    Use the help option to see other available options:
+   - To install the programme for a single user, simply run the script as is:
 
-    ```sh
-    ./installer.sh --help
-    ```
+      ```sh
+      ./installer.sh
+      ```
 
-    For the most basic installation, simply run the script as is:
+      By default, this will install the programme to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
 
-    ```sh
-    ./installer.sh
-    ```
+   - **Alternatively**, to install the programme system-wide, run the script with `sudo`:
 
-    By default, the installer will install the project to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
+      ```sh
+      sudo ./installer.sh
+      ```
+
+      By default, this will install the programme to the `/usr/local` prefix.
+
+   - To check out any other available installation options, append the `--help` flag to the command:
+
+      ```sh
+      ./installer.sh --help
+      ```
 
 ## Configuration
 
