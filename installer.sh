@@ -150,10 +150,10 @@ done
 
 
 # set default prefixes
-if [ -z "${CONFIG_PFX}" ]; then
-    CONFIG_PFX="${HOME}/.config"
-fi
-CONFIG_PFX=$(realpath "${CONFIG_PFX}") || exit 1
+# if [ -z "${CONFIG_PFX}" ]; then
+#     CONFIG_PFX="${HOME}/.config"
+# fi
+# CONFIG_PFX=$(realpath "${CONFIG_PFX}") || exit 1
 
 if [ -z "${INSTALL_PFX}" ]; then
     INSTALL_PFX="${HOME}/.local"
