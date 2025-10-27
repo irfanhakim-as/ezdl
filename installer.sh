@@ -128,10 +128,10 @@ INSTALL_PFX=$(realpath "${INSTALL_PFX}") || exit 1
 
 # associative array of required files and their target locations
 declare -A required_files=(
-    ["bin/main.py"]="${INSTALL_PFX}/bin/${__name__}"
-    ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/"
-    ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/"
-    ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/"
+    ["bin/main.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["log/${__name__}.log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
     ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
     ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
