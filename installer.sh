@@ -21,7 +21,7 @@ function help() {
     echo "OPTIONS:"
     # echo "  -c, --config-prefix <path>        Specify a config prefix"
     echo "  -i, --install-prefix <path>       Specify an installation prefix"
-    echo "  -l, --link-install                Perform a symlink installation"
+    # echo "  -l, --link-install                Perform a symlink installation"
     echo "  -u, --uninstall                   Uninstall application"
     echo "  -v, --version                     Return the version of the script"
     echo "  -h, --help                        Print help message"; echo
@@ -77,13 +77,15 @@ function install() {
         if [[ "${file}" =~ ^\. ]]; then
             continue
         fi
-        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
-            echo "Copying ${file} to ${required_files[${file}]}"
-            cp -i "${file}" "${required_files[${file}]}"
-        else
-            echo "Symlinking ${file} to ${required_files[${file}]}"
-            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
-        fi
+        # if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
+        #     echo "Copying ${file} to ${required_files[${file}]}"
+        #     cp -i "${file}" "${required_files[${file}]}"
+        # else
+        #     echo "Symlinking ${file} to ${required_files[${file}]}"
+        #     ln -s "$(realpath "${file}")" "${required_files[${file}]}"
+        # fi
+        echo "Copying ${file} to ${required_files[${file}]}"
+        cp -f "${file}" "${required_files[${file}]}"
     done
     # setup virtual environment
     setup_venv && echo "Successfully set up virtual environment"
@@ -124,9 +126,9 @@ while [[ ${#} -gt 0 ]]; do
             INSTALL_PFX="${2}"
             shift
             ;;
-        -l|--link-install)
-            LINK_INSTALL=1
-            ;;
+        # -l|--link-install)
+        #     LINK_INSTALL=1
+        #     ;;
         -u|--uninstall)
             UNINSTALL_APP=1
             ;;
