@@ -135,7 +135,7 @@ declare -A required_files=(
     ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
-    ["log/${__name__}.log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
+    [".log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
     ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
     ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
 )
