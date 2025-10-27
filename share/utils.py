@@ -13,6 +13,7 @@
 
 import json
 import os
+import shutil
 import sys
 from colorama import (
     Fore,
@@ -82,6 +83,26 @@ def getConfigValue(config, key, **kwargs):
 def determineConfig(config, opts, configKey, optsKey, default=None):
     configValue = getConfigValue(config, configKey, default=default)
     return getConfigValue(opts, optsKey, default=configValue)
+
+
+# ensure config existence and return dictionary
+def ensureConfig(configFilename, **kwargs):
+    configDir = resolvePath(kwargs.get("config_dir", "~/.config/ezdl"))
+    defaultConfigDir = resolvePath(kwargs.get("default_config_dir", "../config"))
+    configFile = os.path.join(configDir, configFilename)
+    defaultConfigFile = os.path.join(defaultConfigDir, configFilename)
+    # copy default config
+    if not Path(configFile).is_file() and Path(defaultConfigFile).is_file():
+        os.makedirs(os.path.dirname(configFile), exist_ok=True)
+        shutil.copy(defaultConfigFile, configFile)
+    # return config dictionary
+    if Path(configFile).is_file():
+        with open(configFile, "r") as f:
+            data = json.load(f)
+    else:
+        print(writeWarning("Config file not found! (%s)" % configFile))
+        exit(1)
+    return data
 
 
 # read json file
