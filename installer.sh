@@ -85,6 +85,8 @@ function install() {
             ln -s "$(realpath "${file}")" "${required_files[${file}]}"
         fi
     done
+    # setup virtual environment
+    setup_venv && echo "Successfully set up virtual environment"
 }
 
 
