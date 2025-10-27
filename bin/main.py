@@ -15,7 +15,7 @@ import argparse
 import os
 import sys
 import yt_dlp as youtube_dl
-project_path = "../share/ezdl"
+project_path = "."
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
 from metadata import (
     __name__ as __app_name__,
