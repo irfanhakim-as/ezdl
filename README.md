@@ -123,3 +123,33 @@ They are both installed to `~/.config/ezdl` by default.
     ```sh
     ezdl --help
     ```
+
+## Uninstallation
+
+Follow these steps to uninstall the programme:
+
+1. Get into the local repository:
+
+    ```sh
+    cd ~/.ezdl
+    ```
+
+2. Uninstall using the same installer script:
+
+   - If you have previously installed the programme for a single user, run the script as is with the `--uninstall` flag:
+
+      ```sh
+      ./installer.sh --uninstall
+      ```
+
+   - **Alternatively**, if you have installed the programme system-wide, run the script with `sudo`:
+
+      ```sh
+      sudo ./installer.sh --uninstall
+      ```
+
+   - **(Optional)** Remove the user configuration directory and the local repository:
+
+      ```sh
+      rm -rf ~/.config/ezdl ~/.ezdl
+      ```
