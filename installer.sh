@@ -166,6 +166,7 @@ VENV_PFX=$(realpath "${VENV_PFX}") || exit 1
 
 # associative array of required files and their target locations
 declare -A required_files=(
+    ["bin/main.sh"]="${INSTALL_PFX}/bin/${__name__}"
     ["bin/main.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
     ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
