@@ -99,7 +99,7 @@ function uninstall() {
     for file in "${!required_files[@]}"; do
         if [[ -e "${required_files[${file}]}" ]]; then
             echo "Removing ${required_files[${file}]}"
-            rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
+            rm -f "${required_files[${file}]}" 2>/dev/null || rm -rf "${required_files[${file}]}"
         fi
     done
 }
