@@ -3,9 +3,9 @@
 #         :::   :::  ::::::::::::::    :::    :::
 #       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
 #     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
-#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
-#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
-#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://l.irfanhak.im/links
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#
 # ###       #################    ######     ###
 #
 # ezdl: Video downloader script for YouTube, Instagram, Tik Tok, and more.
@@ -15,27 +15,29 @@ import argparse
 import os
 import sys
 import yt_dlp as youtube_dl
-project_path = "../share/ezdl"
+project_path = "."
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), project_path)))
 from metadata import (
     __name__ as __app_name__,
     __version__ as __app_version__,
 )
-from parser import (
-    sanitiseVideoList,
-)
+# from parser import (
+#     sanitiseVideoList,
+# )
 from utils import (
     colouriseString,
     createColumns,
     determineConfig,
+    ensureConfig,
     getConfigValue,
     getUserList,
     printColumns,
-    readJson,
+    # readJson,
     resolvePath,
     selectFromDict,
     syncCookies,
     writeError,
+    writeToLog,
     writeWarning,
 )
 
@@ -63,13 +65,14 @@ def getUserInput(config, **kwargs):
     # list user cookies
     cookiesDict = syncCookies(getConfigValue(config, "cookies_dir", default="~/.ezdl/cookies"))
     # list user sources
-    sourceFile = resolvePath("~/.config/ezdl/source.json")
-    sourceDict = readJson(sourceFile, required=True)
+    # sourceFile = resolvePath("~/.config/ezdl/source.json")
+    # sourceDict = readJson(sourceFile, required=True)
+    sourceDict = ensureConfig("source.json")
 
     # get source selection
     source = selectFromDict(
         sourceDict,
-        default=getConfigValue(config, "default_source", default="yt_best"),
+        default=getConfigValue(config, "default_source"),
         intro="source",
         introColour="red",
         introStyle="bright",
@@ -215,10 +218,9 @@ def downloadVideos(config, queue, **kwargs):
         # print column items
         printColumns(colDict, colMaxLen, header=False)
         # write failed downloads to log
-        installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
-        logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
-        with open(logFile, "a") as f:
-            f.write("\n" + errorMessage + " " + " ".join(failedDownloads.values()))
+        # installPrefix = getConfigValue(config, "install_pfx", default="~/.local")
+        # logFile = resolvePath("%s/share/ezdl/log/ezdl.log" % installPrefix)
+        writeToLog(errorMessage + " " + " ".join(failedDownloads.values()))
     # print success message
     else:
         print("✌️ All videos downloaded successfully!")
@@ -261,8 +263,9 @@ if __name__ == "__main__":
             print("%s: %s" % (__app_name__, __app_version__))
             exit(0)
         # read user config
-        configFile = resolvePath("~/.config/ezdl/ezdl.json")
-        config = readJson(configFile, required=True)
+        # configFile = resolvePath("~/.config/ezdl/ezdl.json")
+        # config = readJson(configFile, required=True)
+        config = ensureConfig("ezdl.json")
         # get user queue
         queue = getUserInput(config, args=args, margin=margin)
         # download videos

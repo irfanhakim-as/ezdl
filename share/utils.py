@@ -3,9 +3,9 @@
 #         :::   :::  ::::::::::::::    :::    :::
 #       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
 #     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
-#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
-#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
-#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://l.irfanhak.im/links
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#
 # ###       #################    ######     ###
 #
 # ezdl-utils: Utility functions written for the ezdl tool.
@@ -13,6 +13,7 @@
 
 import json
 import os
+import shutil
 import sys
 from colorama import (
     Fore,
@@ -33,7 +34,16 @@ def normaliseString(s):
 
 # resolve provided path
 def resolvePath(path):
-    return os.path.abspath(os.path.expanduser(path)) if path else None
+    # return nothing if path not provided
+    if not path: return None
+    # expand user home directory
+    expanded = os.path.expanduser(path)
+    # make relative path relative to script location
+    if not os.path.isabs(expanded):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        expanded = os.path.join(script_dir, expanded)
+    # normalise and return absolute path
+    return os.path.abspath(expanded)
 
 
 # create intro title
@@ -49,6 +59,12 @@ def colouriseString(s, **kwargs):
     style = getattr(Style, style.upper()) if colour and style else ""
     reset = Style.RESET_ALL if colour else ""
     return "{colour}{style}{s}{reset}".format(colour=colour, style=style, s=s, reset=reset)
+
+
+# write to log file
+def writeToLog(message, logFile=resolvePath("../log/ezdl.log")):
+    os.makedirs(os.path.dirname(logFile), exist_ok=True)
+    with open(logFile, "a") as f: f.write("%s\n" % message)
 
 
 # read config file
@@ -75,20 +91,40 @@ def determineConfig(config, opts, configKey, optsKey, default=None):
     return getConfigValue(opts, optsKey, default=configValue)
 
 
-# read json file
-def readJson(jsonFile, **kwargs):
-    required = kwargs.get("required", False)
-    silent = kwargs.get("silent", False)
-    data = {}
-    if Path(jsonFile).is_file():
-        with open(jsonFile, "r") as f:
+# ensure config existence and return dictionary
+def ensureConfig(configFilename, **kwargs):
+    configDir = resolvePath(kwargs.get("config_dir", "~/.config/ezdl"))
+    defaultConfigDir = resolvePath(kwargs.get("default_config_dir", "../config"))
+    configFile = os.path.join(configDir, configFilename)
+    defaultConfigFile = os.path.join(defaultConfigDir, configFilename)
+    # copy default config
+    if not Path(configFile).is_file() and Path(defaultConfigFile).is_file():
+        os.makedirs(os.path.dirname(configFile), exist_ok=True)
+        shutil.copy(defaultConfigFile, configFile)
+    # return config dictionary
+    if Path(configFile).is_file():
+        with open(configFile, "r") as f:
             data = json.load(f)
     else:
-        if not silent:
-            print(writeWarning("JSON file not found! (%s)" % jsonFile))
-        if required:
-            exit(1)
+        print(writeWarning("Config file not found! (%s)" % configFile))
+        exit(1)
     return data
+
+
+# read json file
+# def readJson(jsonFile, **kwargs):
+#     required = kwargs.get("required", False)
+#     silent = kwargs.get("silent", False)
+#     data = {}
+#     if Path(jsonFile).is_file():
+#         with open(jsonFile, "r") as f:
+#             data = json.load(f)
+#     else:
+#         if not silent:
+#             print(writeWarning("JSON file not found! (%s)" % jsonFile))
+#         if required:
+#             exit(1)
+#     return data
 
 
 # sync available cookies

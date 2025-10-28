@@ -8,20 +8,15 @@
 
 ### Operating System
 
-- `Linux`
-- `macOS`
-- `Windows` **ONLY** through [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+- Linux
+- macOS
+- Windows (using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install))
 
 ### System software
 
 - `bash` 5.0+
 - `ffmpeg` 6.1.1+
 - `python` 3.0+
-
-### Python library (pip)
-
-- `colorama` 0.4.4+
-- `yt-dlp` 2023.7.6+
 
 ## Features
 
@@ -36,9 +31,11 @@
 
 - Easy to use with essentially nothing to remember or recall when you need to download a video.
 - Very fast downloads and compatible with videos from a huge list of sources thanks to the [**yt-dlp**](https://github.com/yt-dlp/yt-dlp) project.
-- Custom sanitisation/parsing options for video links i.e. automatically changing `vimeo.com` links to `player.vimeo.com`, `x.com` links to `twitter.com`, and so on. **[EXPERIMENTAL]**
+- Custom sanitisation/parsing options for video links (i.e. automatically changing `vimeo.com` links to `player.vimeo.com`, `x.com` links to `twitter.com`, and removes tracking code from certain sites that are known to have them).
 
 ## Installation
+
+Follow these steps to install or update the programme for a single user or system-wide:
 
 1. Ensure that you have met all of the project [requirements](#requirements).
 
@@ -54,29 +51,43 @@
     cd ~/.ezdl
     ```
 
-4. Use the installer script:
+4. Install using the provided installer script.
 
-    Use the help option to see other available options:
+   - To install the programme for a single user, simply run the script as is:
 
-    ```sh
-    ./installer.sh --help
-    ```
+      ```sh
+      ./installer.sh
+      ```
 
-    For the most basic installation, simply run the script as is:
+      By default, this will install the programme to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
 
-    ```sh
-    ./installer.sh
-    ```
+   - **Alternatively**, to install the programme system-wide, run the script with `sudo`:
 
-    By default, the installer will install the project to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
+      ```sh
+      sudo ./installer.sh
+      ```
+
+      By default, this will install the programme to the `/usr/local` prefix.
+
+   - To check out any other available installation options, append the `--help` flag to the command:
+
+      ```sh
+      ./installer.sh --help
+      ```
 
 ## Configuration
 
-There are two configuration files available that are provided by default after installation:
+There are two configuration files available that are provided by default after [using **ezdl**](#usage) for the first time:
 
-- `ezdl.json`: Configuration options pertaining to the **ezdl** tool. All supported options are detailed below.
+- [`ezdl.json`](config/ezdl.json): Configuration options pertaining to the **ezdl** tool. All supported options are detailed below.
 
-- `source.json`: Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading i.e. one profile for downloading YouTube videos as `mp4` files while another profile for downloading YouTube videos as `mp3` files. Examples can be found in the provided [`source.json`](config/source.json) file.
+- [`source.json`](config/source.json): Source profile configurations that are primarily used as **yt-dlp** download options you could pick from when you are downloading videos. They are meant to be set up for different sources or modes of downloading, for example:
+
+  - One profile for downloading YouTube videos as `mp4` files
+  - Another profile for downloading YouTube videos as `mp3` files
+  - A profile for downloading videos off of social media sites like Twitter or Instagram
+
+  Each of these profiles could be customised according to their specific needs (i.e. different quality preferences, formats, cookies, etc.)
 
 They are both installed to `~/.config/ezdl` by default.
 
@@ -87,11 +98,10 @@ They are both installed to `~/.config/ezdl` by default.
 | `cookies_dir` | The directory where your cookie(s) are stored, if any. | `~/Downloads/cookies` | `~/.ezdl/cookies` |
 | `default_cookie` | The default cookie (`.txt`) file name to use/suggest. | `cookies` if the file name is `cookies.txt` | `anonymous` or the first available cookie if any |
 | `default_download_path` | The default download path name to use/suggest. | `current` | `downloads` or the first available download path |
-| `default_source` | The default source profile name to use/suggest. | `twitter` | `yt_best` or the first available source profile |
+| `default_source` | The default source profile name to use/suggest. | `twitter` | The first available source profile |
 | `download_auto_subs` | Specifies whether or not **ezdl** should download automatically generated video subtitles. | `true` | `false` |
 | `download_paths` | A dictionary of download path options comprised of their name and path. | `{"videos": "~/Videos", "movies": "~/Movies"}` | `{"downloads": "~/Downloads", "current": "."}` |
 | `download_subtitles` | Specifies whether or not **ezdl** should download video subtitles. | `true` | `false` |
-| `install_pfx` | The prefix where **ezdl** was installed. Update this if it's been changed. | `/usr/local` | `~/.local` |
 | `sanitise_links` | Specifies whether or not **ezdl** should sanitise video links. | `false` | `true` |
 | `subtitle_format` | The preferred subtitle format to download if available. | `vtt` | `srt` |
 | `subtitle_lang` | A list of language codes to download video subtitles for. | `["ja", "ko"]` | `["en.*"]` |
@@ -113,3 +123,33 @@ They are both installed to `~/.config/ezdl` by default.
     ```sh
     ezdl --help
     ```
+
+## Uninstallation
+
+Follow these steps to uninstall the programme:
+
+1. Get into the local repository:
+
+    ```sh
+    cd ~/.ezdl
+    ```
+
+2. Uninstall using the same installer script:
+
+   - If you have previously installed the programme for a single user, run the script as is with the `--uninstall` flag:
+
+      ```sh
+      ./installer.sh --uninstall
+      ```
+
+   - **Alternatively**, if you have installed the programme system-wide, run the script with `sudo`:
+
+      ```sh
+      sudo ./installer.sh --uninstall
+      ```
+
+   - **(Optional)** Remove the user configuration directory and the local repository:
+
+      ```sh
+      rm -rf ~/.config/ezdl ~/.ezdl
+      ```

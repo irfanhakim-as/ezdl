@@ -3,9 +3,9 @@
 #         :::   :::  ::::::::::::::    :::    :::
 #       :+:+: :+:+:     :+:    :+:   :+:   :+: :+:
 #     +:+ +:+:+ +:+    +:+    +:+  +:+   +:+   +:+  Irfan Hakim (MIKA)
-#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://sakurajima.social/@irfan
-#   +#+       +#+    +#+    +#+  +#+  +#+     +#+   https://github.com/irfanhakim-as
-#  #+#       #+#    #+#    #+#   #+# #+#     #+#    https://gitlab.com/irfanhakim
+#    +#+  +:+  +#+    +#+    +#++:++   +#++:++#++:  https://l.irfanhak.im/links
+#   +#+       +#+    +#+    +#+  +#+  +#+     +#+
+#  #+#       #+#    #+#    #+#   #+# #+#     #+#
 # ###       #################    ######     ###
 #
 # installer: Project installer script.
@@ -21,11 +21,39 @@ function help() {
     echo "OPTIONS:"
     # echo "  -c, --config-prefix <path>        Specify a config prefix"
     echo "  -i, --install-prefix <path>       Specify an installation prefix"
-    echo "  -l, --link-install                Perform a symlink installation"
+    # echo "  -l, --link-install                Perform a symlink installation"
     echo "  -u, --uninstall                   Uninstall application"
     echo "  -v, --version                     Return the version of the script"
     echo "  -h, --help                        Print help message"; echo
     echo "Report bugs to ${__source__}/issues"
+}
+
+
+# setup virtual environment
+function setup_venv() {
+    local venv_path="${VENV_PFX}/.venv"
+    echo "Setting up virtual environment at ${venv_path}"
+    # check if python3 is available
+    if ! command -v python3 &> /dev/null; then
+        echo "ERROR: python3 not found"
+        exit 1
+    fi
+    # create venv if it does not exist
+    if [[ ! -f "${venv_path}/bin/python" ]]; then
+        python3 -m venv "${venv_path}" || {
+            echo "ERROR: Failed to create virtual environment"
+            exit 1
+        }
+    fi
+    # install dependencies if requirements.txt exists
+    if [[ -f "requirements.txt" ]]; then
+        echo "Installing dependencies to virtual environment"
+        "${venv_path}/bin/pip" install --upgrade pip
+        "${venv_path}/bin/pip" install -r requirements.txt || {
+            echo "ERROR: Failed to install dependencies"
+            exit 1
+        }
+    fi
 }
 
 
@@ -34,7 +62,7 @@ function install() {
     echo "Installing ${__name__} v${__version__} to ${INSTALL_PFX}"
     # check for required files before proceeding
     for file in "${!required_files[@]}"; do
-        if [[ ! -f "${file}" ]]; then
+        if [[ ! "${file}" =~ ^\. ]] && [[ ! -f "${file}" ]]; then
             echo "ERROR: Required file not found (${file})"
             exit 1
         fi
@@ -46,14 +74,21 @@ function install() {
     done
     # copy required files
     for file in "${!required_files[@]}"; do
-        if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
-            echo "Copying ${file} to ${required_files[${file}]}"
-            cp -i "${file}" "${required_files[${file}]}"
-        else
-            echo "Symlinking ${file} to ${required_files[${file}]}"
-            ln -s "$(realpath "${file}")" "${required_files[${file}]}"
+        if [[ "${file}" =~ ^\. ]]; then
+            continue
         fi
+        # if [ "${LINK_INSTALL}" != 1 ] || [[ "${file}" =~ ^(config|log)/ ]]; then
+        #     echo "Copying ${file} to ${required_files[${file}]}"
+        #     cp -i "${file}" "${required_files[${file}]}"
+        # else
+        #     echo "Symlinking ${file} to ${required_files[${file}]}"
+        #     ln -s "$(realpath "${file}")" "${required_files[${file}]}"
+        # fi
+        echo "Copying ${file} to ${required_files[${file}]}"
+        cp -f "${file}" "${required_files[${file}]}"
     done
+    # setup virtual environment
+    setup_venv && echo "Successfully set up virtual environment"
 }
 
 
@@ -64,7 +99,7 @@ function uninstall() {
     for file in "${!required_files[@]}"; do
         if [[ -e "${required_files[${file}]}" ]]; then
             echo "Removing ${required_files[${file}]}"
-            rm -f "${required_files[${file}]}" || rm -rf "${required_files[${file}]}"
+            rm -f "${required_files[${file}]}" 2>/dev/null || rm -rf "${required_files[${file}]}"
         fi
     done
 }
@@ -91,9 +126,9 @@ while [[ ${#} -gt 0 ]]; do
             INSTALL_PFX="${2}"
             shift
             ;;
-        -l|--link-install)
-            LINK_INSTALL=1
-            ;;
+        # -l|--link-install)
+        #     LINK_INSTALL=1
+        #     ;;
         -u|--uninstall)
             UNINSTALL_APP=1
             ;;
@@ -115,26 +150,37 @@ done
 
 
 # set default prefixes
-if [ -z "${CONFIG_PFX}" ]; then
-    CONFIG_PFX="${HOME}/.config"
-fi
-CONFIG_PFX=$(realpath "${CONFIG_PFX}") || exit 1
+# if [ -z "${CONFIG_PFX}" ]; then
+#     CONFIG_PFX="${HOME}/.config"
+# fi
+# CONFIG_PFX=$(realpath "${CONFIG_PFX}") || exit 1
 
 if [ -z "${INSTALL_PFX}" ]; then
-    INSTALL_PFX="${HOME}/.local"
+    if [ "${EUID}" -eq 0 ]; then
+        INSTALL_PFX="/usr/local"
+    else
+        INSTALL_PFX="${HOME}/.local"
+    fi
 fi
 INSTALL_PFX=$(realpath "${INSTALL_PFX}") || exit 1
+
+if [ -z "${VENV_PFX}" ]; then
+    VENV_PFX="${INSTALL_PFX}/share/${__namespace__}"
+fi
+VENV_PFX=$(realpath "${VENV_PFX}") || exit 1
 
 
 # associative array of required files and their target locations
 declare -A required_files=(
-    ["bin/main.py"]="${INSTALL_PFX}/bin/${__name__}"
-    ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/"
-    ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/"
-    ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/"
-    ["log/${__name__}.log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
-    ["config/${__name__}.json"]="${CONFIG_PFX}/${__namespace__}/"
-    ["config/source.json"]="${CONFIG_PFX}/${__namespace__}/"
+    ["bin/main.sh"]="${INSTALL_PFX}/bin/${__name__}"
+    ["share/main.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/metadata.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/parser.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    ["share/utils.py"]="${INSTALL_PFX}/share/${__namespace__}/bin/"
+    [".log"]="${INSTALL_PFX}/share/${__namespace__}/log/"
+    ["config/${__name__}.json"]="${INSTALL_PFX}/share/${__namespace__}/config/"
+    ["config/source.json"]="${INSTALL_PFX}/share/${__namespace__}/config/"
+    [".venv"]="${VENV_PFX}/.venv/"
 )
 
 
